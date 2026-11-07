@@ -1,0 +1,4 @@
+travel-inbox/*
+!travel-inbox/.gitkeep
+.DS_Store
+__pycache__/

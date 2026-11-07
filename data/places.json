@@ -1,0 +1,20 @@
+{
+  "home": {
+    "name": "Solihull",
+    "lat": 52.41,
+    "lon": -1.78
+  },
+  "photos": [
+    {
+      "id": "905d08c90a",
+      "src": "img/travel/zanzibar-2019-02-09-905d.jpg",
+      "thumb": "img/travel/thumb/zanzibar-2019-02-09-905d.jpg",
+      "lat": -5.99,
+      "lon": 39.38,
+      "place": "Zanzibar",
+      "country": "Tanzania",
+      "date": "2019-02-09",
+      "caption": "North coast, Zanzibar"
+    }
+  ]
+}
