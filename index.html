@@ -439,55 +439,75 @@ a.inl:hover,a.inl:focus-visible{background-size:100% 100%;color:#14110a}
 .ea-tot .sw{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px}.ea-tot .sw.el{background:#86e0a6}.ea-tot .sw.in{background:#f4a3a3}
 @media (max-width:760px){.ea{grid-template-columns:minmax(0,1fr)}}
 
-/* My life in motion */
-.life-wrap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:22px;align-items:stretch}
-.life-globe{position:relative;min-height:520px;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:radial-gradient(70% 70% at 50% 45%,rgba(242,181,68,.08),transparent 70%),#0a0d15}
-.life-globe canvas{display:block;width:100%!important;height:100%!important;position:absolute;inset:0;cursor:grab}
-.life-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:13px var(--mono);color:#7d838f;text-align:center;padding:20px}
-.life-tag{position:absolute;left:0;top:0;z-index:2;pointer-events:none;font:700 12px var(--body);color:#1b1d22;background:#fffdf8;border-radius:999px;padding:6px 12px;box-shadow:0 8px 24px rgba(0,0,0,.35);opacity:0;transition:opacity .3s;white-space:nowrap}
-.life-ctrl{position:absolute;left:14px;bottom:14px;z-index:2;display:flex;gap:8px;flex-wrap:wrap}
-.life-ctrl button{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(22,26,40,.85);color:#f2eee6;font:700 13px var(--body);cursor:pointer;transition:background .25s,transform .25s}
-.life-ctrl button:hover{transform:translateY(-2px);background:rgba(242,181,68,.2)}
-.life-ctrl button[aria-pressed="true"]{background:#F2B544;color:#1a1205}
-.life-hint{position:absolute;right:14px;top:14px;z-index:2;font:11px var(--mono);color:#9EA3AE;background:rgba(22,26,40,.75);border-radius:8px;padding:6px 10px}
-.life-card{border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:#11141b;display:flex;flex-direction:column}
-.life-card.in .life-photo img{animation:kb 9s ease-out forwards}
-.life-card.in .life-meta{animation:pwswap .6s}
-@keyframes kb{from{transform:scale(1.12)}to{transform:scale(1)}}
-.life-photo{position:relative;aspect-ratio:4/3;overflow:hidden;background:#0c0f14}
-.life-photo img{width:100%;height:100%;object-fit:cover;display:block}
-.life-meta{padding:20px 22px 22px;display:flex;flex-direction:column;gap:8px}
-.life-k{font:700 11px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--sa)}
-.life-meta h3{margin:0;font-family:var(--display);font-style:italic;font-weight:400;font-size:40px;line-height:1}
-.life-meta p{margin:0;color:#B3B7C0}
-.life-row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font:12px var(--mono);color:#9EA3AE;border-top:1px solid rgba(255,255,255,.08);padding-top:12px;margin-top:4px}
-.life-row b{color:var(--sa);font-variant-numeric:tabular-nums}
-.life-empty{padding:28px;color:#9EA3AE}
-.life-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0 0 22px}
-.life-stats div{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px 18px;background:rgba(255,255,255,.02)}
-.life-stats b{display:block;font-family:var(--display);font-style:italic;font-weight:400;font-size:40px;line-height:1;color:var(--sa);font-variant-numeric:tabular-nums}
-.life-stats span{font-size:13.5px;color:#9EA3AE}
-.life-strip{position:relative;overflow:hidden;padding:26px 0 8px;margin:0 -8px;touch-action:pan-y;cursor:grab;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.lc-track{display:flex;gap:16px;width:max-content;transition:transform .8s cubic-bezier(.2,.75,.2,1);will-change:transform}
-.lc-track.drag{transition:none}
-.lc-slide{--d:3;position:relative;flex:none;width:300px;aspect-ratio:4/3;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.1);padding:0;background:#0c0f14;cursor:pointer;transform:scale(calc(1 - var(--d) * .09));opacity:calc(1 - var(--d) * .22);transition:transform .8s cubic-bezier(.2,.75,.2,1),opacity .8s,border-color .5s,box-shadow .5s}
-.lc-slide img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;transition:transform 5s ease-out}
-.lc-slide.on{border-color:var(--sa);box-shadow:0 0 0 2px var(--sa),0 20px 60px -18px var(--sa)}
-.lc-slide.on img{transform:scale(1.08)}
-.lc-cap{position:absolute;left:0;right:0;bottom:0;padding:34px 14px 12px;text-align:left;background:linear-gradient(rgba(8,10,14,0),rgba(8,10,14,.88));opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s}
-.lc-slide.on .lc-cap{opacity:1;transform:none}
-.lc-cap b{display:block;font:600 14px var(--body);color:#fff}
-.lc-cap small{font:11px var(--mono);letter-spacing:.06em;color:#C3C6CD}
-.lc-nav{display:flex;align-items:center;gap:14px;margin-top:14px}
-.lc-btn{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.03);color:var(--text);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .25s,border-color .25s,transform .25s}
-.lc-btn:hover{border-color:var(--sa);background:color-mix(in srgb,var(--sa) 15%,transparent);transform:translateY(-2px)}
-.lc-prog{flex:1;height:2px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}
-.lc-prog i{display:block;height:100%;width:0;background:var(--sa);box-shadow:0 0 10px var(--sa)}
-.lc-prog i.run{animation:lcprog 4.8s linear forwards}
-@keyframes lcprog{to{width:100%}}
-.lc-count{font:12px var(--mono);color:#9EA3AE;font-variant-numeric:tabular-nums;min-width:62px;text-align:center}
-@media (max-width:640px){.lc-slide{width:72vw}}
-@media (max-width:900px){.life-wrap{grid-template-columns:minmax(0,1fr)}.life-globe{min-height:400px}.life-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* My life in motion: cinematic story */
+.lm-sub{margin:-14px 0 26px;color:#A9AEB8;max-width:62ch}
+.lm{position:relative}
+.lm-stage{position:relative;height:clamp(520px,74vh,780px);border-radius:24px;overflow:hidden;background:#07090d;isolation:isolate;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.lm-frame{position:absolute;inset:0;opacity:0;transition:opacity 1.4s ease}
+.lm-frame.on{opacity:1;z-index:1}
+.lm-bg{position:absolute;inset:-40px;background-size:cover;background-position:center;filter:blur(38px) saturate(1.15) brightness(.55);transform:scale(1.1)}
+.lm-fg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.lm-fg img{max-width:100%;max-height:100%;width:auto;height:100%;object-fit:contain;transform-origin:var(--ox,50%) var(--oy,50%);box-shadow:0 30px 90px rgba(0,0,0,.55)}
+.lm-fg.wide img{width:100%;height:100%;object-fit:cover}
+.lm-frame.on .lm-fg img{animation:lmkb var(--kb,8s) linear forwards}
+@keyframes lmkb{from{transform:scale(1.02) translate(0,0)}to{transform:scale(1.13) translate(var(--tx,0),var(--ty,0))}}
+.lm-shade{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,rgba(5,7,11,.82) 0%,rgba(5,7,11,.35) 38%,rgba(5,7,11,0) 60%),linear-gradient(0deg,rgba(5,7,11,.85) 0%,rgba(5,7,11,0) 42%),linear-gradient(180deg,rgba(5,7,11,.55),rgba(5,7,11,0) 22%)}
+.lm-text{position:absolute;left:clamp(20px,4vw,48px);bottom:clamp(76px,9vw,96px);z-index:3;max-width:min(520px,80%);pointer-events:none}
+.lm-ch{font:700 11.5px var(--mono);letter-spacing:.26em;text-transform:uppercase;color:var(--sa)}
+.lm-title{margin:8px 0 10px;font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(44px,6vw,84px);line-height:.95;color:#fff;text-shadow:0 6px 40px rgba(0,0,0,.5)}
+.lm-intro{margin:0;font-size:clamp(15px,1.4vw,17.5px);color:#D7D9DE;max-width:46ch;line-height:1.55}
+.lm-cap{margin-top:16px;display:flex;align-items:center;gap:10px;font:500 13.5px var(--body);color:#fff;opacity:.92;transition:opacity .5s,transform .5s}
+.lm-cap::before{content:"";width:22px;height:1px;background:var(--sa)}
+.lm-cap.swap{opacity:0;transform:translateY(6px)}
+.lm-text.swap .lm-title,.lm-text.swap .lm-intro,.lm-text.swap .lm-ch{opacity:0;transform:translateY(10px)}
+.lm-title,.lm-intro,.lm-ch{transition:opacity .7s,transform .7s}
+.lm-globe{position:absolute;right:clamp(14px,2.5vw,28px);top:clamp(14px,2.5vw,28px);z-index:3;width:clamp(120px,15vw,200px);aspect-ratio:1;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(11,13,18,.55),rgba(11,13,18,0) 70%)}
+.lm-globe canvas{width:100%!important;height:100%!important;display:block}
+.lm-dist{position:absolute;right:clamp(14px,2.5vw,28px);top:calc(clamp(14px,2.5vw,28px) + clamp(120px,15vw,200px) + 6px);z-index:3;width:clamp(120px,15vw,200px);text-align:center;font:11px var(--mono);letter-spacing:.08em;color:#C3C6CD}
+.lm-dist b{color:var(--sa);font-variant-numeric:tabular-nums}
+.lm-card{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;background:rgba(5,7,11,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .9s ease}
+.lm-card.on{opacity:1}
+.lm-card .k{font:700 12px var(--mono);letter-spacing:.32em;text-transform:uppercase;color:var(--sa)}
+.lm-card h3{margin:0;font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(48px,8vw,110px);line-height:.95;color:#fff}
+.lm-card p{margin:0;font:13px var(--mono);letter-spacing:.12em;color:#C3C6CD;text-transform:uppercase}
+.lm-card .rule{width:0;height:1px;background:var(--sa);box-shadow:0 0 12px var(--sa);transition:width 1.6s cubic-bezier(.2,.7,.2,1) .2s}
+.lm-card.on .rule{width:min(320px,50%)}
+.lm-card h3,.lm-card p,.lm-card .k{transform:translateY(14px);opacity:0;transition:transform 1s cubic-bezier(.2,.7,.2,1),opacity 1s}
+.lm-card.on h3,.lm-card.on p,.lm-card.on .k{transform:none;opacity:1}
+.lm-card.on p{transition-delay:.25s}
+.lm-bars{position:absolute;left:clamp(20px,4vw,48px);right:clamp(20px,4vw,48px);bottom:clamp(22px,3vw,34px);z-index:3;display:flex;align-items:center;gap:16px}
+.lm-seg{flex:1;display:flex;gap:3px}
+.lm-seg i{flex:1;height:2px;border-radius:2px;background:rgba(255,255,255,.22);overflow:hidden;position:relative}
+.lm-seg i.done{background:rgba(255,255,255,.85)}
+.lm-seg i.cur::after{content:"";position:absolute;inset:0;width:0;background:#fff;box-shadow:0 0 8px var(--sa)}
+.lm-seg i.cur.run::after{animation:lmbar var(--dw,4.6s) linear forwards}
+.lm.paused .lm-seg i.cur.run::after{animation-play-state:paused}
+@keyframes lmbar{to{width:100%}}
+.lm-ctrl{display:flex;gap:6px}
+.lm-ctrl button{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(10,12,18,.55);color:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:background .25s,border-color .25s}
+.lm-ctrl button:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.4)}
+.lm-chapters{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:16px}
+.lm-chap{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;padding:14px 16px;border-radius:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);color:var(--text);font:inherit;cursor:pointer;overflow:hidden;transition:border-color .35s,background .35s}
+.lm-chap small{font:700 10.5px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:#7d838f;transition:color .35s}
+.lm-chap b{font-family:var(--display);font-style:italic;font-weight:400;font-size:22px;line-height:1.1}
+.lm-chap span{font-size:12.5px;color:#9EA3AE}
+.lm-chap::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:var(--p,0%);background:var(--sa);transition:width .5s}
+.lm-chap:hover{border-color:rgba(255,255,255,.2)}
+.lm-chap.on{border-color:color-mix(in srgb,var(--sa) 55%,transparent);background:color-mix(in srgb,var(--sa) 7%,transparent)}
+.lm-chap.on small{color:var(--sa)}
+.lm-msg{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;font:13px var(--mono);color:#7d838f}
+@media (max-width:760px){
+  .lm-stage{height:min(84vh,680px);border-radius:18px}
+  .lm-shade{background:linear-gradient(0deg,rgba(5,7,11,.9) 0%,rgba(5,7,11,.4) 45%,rgba(5,7,11,0) 70%),linear-gradient(180deg,rgba(5,7,11,.5),rgba(5,7,11,0) 25%)}
+  .lm-text{bottom:78px;max-width:none;right:20px}
+  .lm-intro{font-size:14.5px}
+  .lm-fg img{width:100%;height:100%;object-fit:cover;box-shadow:none}
+  .lm-globe,.lm-dist{width:96px}
+  .lm-dist{top:calc(14px + 96px + 4px);font-size:10px}
+  .lm-bars{gap:10px}.lm-ctrl button{width:36px;height:36px}
+  .lm-chapters{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){.lm-frame.on .lm-fg img{animation:none}.lm-frame{transition:none}}
 
 /* Rings */
 .rings{width:200px;height:200px}
@@ -1028,24 +1048,28 @@ footer i{display:inline-block;width:6px;height:6px;border-radius:50%;background:
 
 <!-- 06 -->
 <section id="life-in-motion" class="stage" data-stage="6" data-name="Life in motion" data-accent="#F2B544" style="--sa:#F2B544">
-  <div class="panel reveal" id="life">
+  <div class="panel reveal">
     <div class="eyebrow">Stage 06 · Life in motion</div>
     <h2>My life in <em>motion</em></h2>
-    <p style="margin:-14px 0 26px;color:#A9AEB8;max-width:62ch">Places I've been, pinned where each photo was taken. Spin the globe, tap a pin or a photo, or play the journey from home.</p>
-    <div class="life-stats" aria-live="polite"></div>
-    <div class="life-wrap">
-      <div class="life-globe">
-        <div class="life-msg">Loading the globe…</div>
-        <div class="life-tag" aria-hidden="true"></div>
-        <div class="life-hint">Drag to spin · tap a pin</div>
-        <div class="life-ctrl">
-          <button type="button" data-life="play" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg><span>Play the journey</span></button>
-          <button type="button" data-life="reset" aria-label="Back to home"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 11l9-8 9 8M5 10v10h14V10"></path></svg>Home</button>
-        </div>
+    <p class="lm-sub" id="lmsub">Every photo pinned where it was taken. Sit back and let it play, tap to move through it, or jump to a chapter.</p>
+    <div class="lm" id="life">
+      <div class="lm-stage" tabindex="0" aria-label="Travel story. Use the arrow keys to move between photos." aria-roledescription="slideshow">
+        <div class="lm-frame"><div class="lm-bg"></div><div class="lm-fg"><img alt=""></div></div>
+        <div class="lm-frame"><div class="lm-bg"></div><div class="lm-fg"><img alt=""></div></div>
+        <div class="lm-shade"></div>
+        <div class="lm-globe" aria-hidden="true"></div>
+        <div class="lm-dist" aria-hidden="true"></div>
+        <div class="lm-text" aria-live="polite"><div class="lm-ch"></div><h3 class="lm-title"></h3><p class="lm-intro"></p><div class="lm-cap"></div></div>
+        <div class="lm-card" aria-hidden="true"><div class="k"></div><h3></h3><div class="rule"></div><p></p></div>
+        <div class="lm-bars"><div class="lm-seg"></div><div class="lm-ctrl">
+          <button type="button" data-lm="prev" aria-label="Previous photo"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
+          <button type="button" data-lm="play" aria-label="Pause"><svg class="i-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"></path></svg><svg class="i-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:none"><path d="M8 5v14l11-7z"></path></svg></button>
+          <button type="button" data-lm="next" aria-label="Next photo"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+        </div></div>
+        <div class="lm-msg">Loading the story…</div>
       </div>
-      <div class="life-card"><div class="life-empty">Pick a place on the globe.</div></div>
+      <div class="lm-chapters" role="group" aria-label="Chapters"></div>
     </div>
-    <div class="life-strip" aria-label="Travel photos carousel" aria-roledescription="carousel" tabindex="0"></div>
   </div>
 </section>
 

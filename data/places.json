@@ -764,5 +764,23 @@
       "date": "2019-10-21",
       "caption": "The lobby chandelier"
     }
-  ]
+  ],
+  "stories": {
+    "Tanzania": {
+      "title": "Zanzibar",
+      "intro": "Low tides and wooden dhows, a quad-bike run through the villages, and clear water all the way out to Mnemba."
+    },
+    "Qatar": {
+      "title": "Doha & Banana Island",
+      "intro": "A skyline still being built, an island in the bay, and dunes to the south."
+    },
+    "Italy": {
+      "title": "Cinque Terre & Tuscany",
+      "intro": "Cliff villages joined by coast paths, the marble mountains of Carrara, thermal springs and an espresso in Pisa."
+    },
+    "Qatar#2": {
+      "title": "Doha, again",
+      "intro": "Back for the skyline at night, a drive up the north coast and long days at The Pearl."
+    }
+  }
 }
