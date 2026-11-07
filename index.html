@@ -79,7 +79,7 @@ h1{margin:22px 0 26px;font-family:var(--display);font-style:italic;font-weight:4
 h1 span{display:block}
 h1 .glow{color:var(--amber);text-shadow:0 0 28px rgba(242,181,68,.45),0 0 70px rgba(242,181,68,.25)}
 .lede{max-width:40ch;font-size:clamp(19px,1.8vw,23px);line-height:1.55;color:#C9CBD1;margin:0}
-.rot{display:inline-block;position:relative;color:var(--text);font-weight:700;white-space:nowrap}
+.rot{display:block;width:max-content;max-width:100%;position:relative;color:var(--text);font-weight:700;white-space:nowrap;margin-top:2px}
 .rot::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:var(--amber);box-shadow:0 0 10px var(--amber)}
 .rot b{display:inline-block;font-weight:700;transition:opacity .35s,transform .35s,filter .35s}
 .rot b.out{opacity:0;transform:translateY(-10px);filter:blur(4px)}
@@ -299,10 +299,10 @@ a.inl:hover,a.inl:focus-visible{background-size:100% 100%;color:#14110a}
 .sa.scanning .sa-scan{opacity:1;animation:sascan 3s linear forwards}
 @keyframes sascan{from{top:-50px}to{top:100%}}
 .sa-panel{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden}
-.sa-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px 14px;font-size:14px;color:#C3C6CD;border-bottom:1px solid rgba(255,255,255,.06)}
+.sa-row{display:grid;grid-template-columns:minmax(0,1fr) 118px;gap:10px;align-items:center;padding:11px 14px;font-size:14px;color:#C3C6CD;border-bottom:1px solid rgba(255,255,255,.06)}
 .sa-row.pulse{animation:sarow .7s}
 @keyframes sarow{from{background:rgba(242,181,68,.2)}to{background:transparent}}
-.sa-row .st{font:700 10.5px var(--mono);letter-spacing:.04em;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.07);color:#8a909c;transition:background .4s,color .4s;white-space:nowrap}
+.sa-row .st{text-align:center;font:700 10.5px var(--mono);letter-spacing:.04em;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.07);color:#8a909c;transition:background .4s,color .4s;white-space:nowrap}
 .sa-row .st.ai{background:rgba(242,181,68,.16);color:#F6CB78}
 .sa-row .st.ok{background:rgba(47,176,98,.18);color:#86e0a6}
 .sa-row .st.gap{background:rgba(214,69,69,.2);color:#f4a3a3}
@@ -1141,8 +1141,8 @@ header.open .menu-btn i:last-child{top:21px;transform:rotate(-45deg)}
 
 <script src="vendor/three.min.js" defer></script>
 <script src="vendor/OrbitControls.js" defer></script>
-<script src="yard.js" defer></script>
-<script src="life.js" defer></script>
+<script src="yard.js?v=202611071844" defer></script>
+<script src="life.js?v=202611071844" defer></script>
 <script>
 (function(){
 var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1319,6 +1319,17 @@ setTimeout(startMocks,6000);
   }
   if('IntersectionObserver' in window){var o=new IntersectionObserver(function(es){if(es[0].isIntersecting){o.disconnect();go();}},{threshold:.25});o.observe(pw);}else go();
 })();
+
+/* ---------- keep auto-changing boxes at a fixed height ---------- */
+function lockHeight(el,texts,write){if(!el)return;var keep=el.innerHTML,max=0;el.style.minHeight='';texts.forEach(function(t){write(t);max=Math.max(max,el.offsetHeight);});el.innerHTML=keep;el.style.minHeight=max+'px';}
+function lockAll(){
+  var det=document.getElementById('pwdetail');
+  lockHeight(det,[].slice.call(document.querySelectorAll('.pw-pt')),function(b){det.innerHTML='<div class="pw-dk">x</div><h4>'+b.innerHTML+'</h4><p>'+b.getAttribute('data-d')+'</p>';});
+  var q=document.getElementById('eaqt');
+  lockHeight(q,['Is the accommodation provided by a housing association, charity or voluntary organisation?','Do residents receive care, support or supervision?','Is the support provided by the landlord, or on its behalf?','Is the building a refuge or a local authority hostel?','Is the tenancy or licence for a fixed or short period?','Is rent set above the local housing allowance?'],function(t){q.textContent=t;});
+}
+lockAll();var lkT;addEventListener('resize',function(){clearTimeout(lkT);lkT=setTimeout(lockAll,200);});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(lockAll);
 
 /* ---------- stack architecture ---------- */
 (function(){
