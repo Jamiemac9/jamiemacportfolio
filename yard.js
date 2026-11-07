@@ -77,7 +77,7 @@
     if (T.ColorManagement) T.ColorManagement.legacyMode = false;
     var W = stage.clientWidth, H = stage.clientHeight;
     var renderer = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.25 : 1.5));
     renderer.setSize(W, H);
     renderer.outputEncoding = T.sRGBEncoding;
     renderer.toneMapping = T.ACESFilmicToneMapping;
@@ -104,7 +104,7 @@
 
     var hemi = new T.HemisphereLight(0xcfe3ff, 0x5a4a3a, 0.6); scene.add(hemi);
     var sun = new T.DirectionalLight(0xffe2b8, 2.2);
-    sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+    sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024);
     var sc = sun.shadow.camera; sc.left = -16; sc.right = 16; sc.top = 16; sc.bottom = -16; sc.near = 1; sc.far = 80;
     sun.shadow.bias = -0.0008; sun.shadow.normalBias = 0.02;
     scene.add(sun); scene.add(sun.target);
@@ -599,8 +599,17 @@
   }
 
   /* lazy start when the section nears the viewport */
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); start(); } }, { rootMargin: '600px' });
+  var small = window.matchMedia('(max-width: 760px), (pointer: coarse)').matches;
+  if (small) {
+    // phones: wait for a tap so the 3D scene never slows the page
+    root.querySelector('.yard-ring').style.display = 'none'; pct.style.display = 'none';
+    msg.innerHTML = '';
+    var go = document.createElement('button'); go.type = 'button'; go.className = 'yard-go';
+    go.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>Explore the 3D island';
+    loader.insertBefore(go, msg); msg.textContent = 'Every venture as a building you can explore';
+    go.addEventListener('click', function () { go.remove(); root.querySelector('.yard-ring').style.display = ''; pct.style.display = ''; start(); });
+  } else if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); start(); } }, { rootMargin: '300px' });
     io.observe(root);
   } else start();
 })();
