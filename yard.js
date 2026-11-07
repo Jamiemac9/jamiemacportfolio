@@ -77,12 +77,12 @@
     if (T.ColorManagement) T.ColorManagement.legacyMode = false;
     var W = stage.clientWidth, H = stage.clientHeight;
     var renderer = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2));
     renderer.setSize(W, H);
     renderer.outputEncoding = T.sRGBEncoding;
     renderer.toneMapping = T.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
-    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.enabled = !coarse;
     renderer.shadowMap.type = T.PCFSoftShadowMap;
     renderer.domElement.setAttribute('aria-label', 'Interactive 3D island. Each building is one of Jamie’s ventures.');
     renderer.domElement.setAttribute('role', 'img');

@@ -39,7 +39,7 @@
     var places = [];
     photos.forEach(function (p) {
       var hit = null;
-      for (var i = 0; i < places.length; i++) if (km(places[i], p) < 50) { hit = places[i]; break; }
+      for (var i = 0; i < places.length; i++) if (km(places[i], p) < 3) { hit = places[i]; break; }
       if (!hit) { hit = { lat: p.lat, lon: p.lon, place: p.place, country: p.country, photos: [] }; places.push(hit); }
       hit.photos.push(p);
     });
@@ -47,7 +47,7 @@
     var far = places.reduce(function (m, p) { return Math.max(m, km(home, p)); }, 0);
     var total = places.reduce(function (m, p) { return m + km(home, p) * 2; }, 0);
 
-    statsEl.innerHTML = '<div><b data-n="' + Object.keys(countries).length + '">0</b><span>countries</span></div><div><b data-n="' + places.length + '">0</b><span>places</span></div><div><b data-n="' + photos.length + '">0</b><span>photos</span></div><div><b data-n="' + total + '" data-s=" km">0</b><span>travelled from home</span></div>';
+    statsEl.innerHTML = '<div><b data-n="' + Object.keys(countries).length + '">0</b><span>countries</span></div><div><b data-n="' + places.length + '">0</b><span>places</span></div><div><b data-n="' + photos.length + '">0</b><span>photos</span></div><div><b data-n="' + far + '" data-s=" km">0</b><span>furthest from home</span></div>';
     statsEl.querySelectorAll('b').forEach(function (b) { countUp(b, +b.getAttribute('data-n'), b.getAttribute('data-s')); });
 
     // ---------- three.js globe ----------
@@ -135,18 +135,55 @@
     plane.add(glowS); globe.add(plane); plane.visible = false;
     var trip = null; // {curve, t, back}
 
-    // ---------- UI: strip + card ----------
-    strip.innerHTML = '';
-    photos.forEach(function (p, i) {
-      var b = document.createElement('button'); b.type = 'button'; b.className = 'life-thumb';
-      b.innerHTML = '<img src="' + p.thumb + '" alt="' + (p.caption || p.place) + '" loading="lazy" width="480" height="360"><span>' + (p.place || '') + '</span>';
-      b.addEventListener('click', function () { stopPlay(); select(placeOf(p), p); });
-      strip.appendChild(b);
-    });
-    var add = document.createElement('div'); add.className = 'life-more';
-    add.innerHTML = '<b>More on the way</b><span>New trips land here as I add them.</span>';
-    strip.appendChild(add);
+    // ---------- UI: carousel + card ----------
     function placeOf(p) { for (var i = 0; i < places.length; i++) if (places[i].photos.indexOf(p) >= 0) return i; return 0; }
+    strip.innerHTML = '';
+    var track = document.createElement('div'); track.className = 'lc-track'; strip.appendChild(track);
+    var slides = photos.map(function (p, i) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'lc-slide';
+      b.setAttribute('aria-label', (p.caption || p.place) + ', ' + fmtDate(p.date));
+      b.innerHTML = '<img src="' + p.thumb + '" alt="" loading="' + (i < 4 ? 'eager' : 'lazy') + '" width="480" height="360"><span class="lc-cap"><b>' + (p.caption || p.place) + '</b><small>' + (p.place || '') + ' · ' + fmtDate(p.date) + '</small></span>';
+      b.addEventListener('click', function () { if (!dragged) go(i, true); });
+      track.appendChild(b); return b;
+    });
+    var nav = document.createElement('div'); nav.className = 'lc-nav';
+    nav.innerHTML = '<button type="button" class="lc-btn" data-d="-1" aria-label="Previous photo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 6l-6 6 6 6"></path></svg></button><div class="lc-prog"><i></i></div><span class="lc-count">01 / ' + String(photos.length).padStart(2, '0') + '</span><button type="button" class="lc-btn" data-d="1" aria-label="Next photo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"></path></svg></button>';
+    strip.parentNode.insertBefore(nav, strip.nextSibling);
+    var prog = nav.querySelector('.lc-prog i'), countEl = nav.querySelector('.lc-count');
+    nav.querySelectorAll('.lc-btn').forEach(function (b) { b.addEventListener('click', function () { go(idx + (+b.getAttribute('data-d')), true); }); });
+
+    var idx = 0, auto = !reduce, timer = null, resumeT = null, inView = false, DWELL = 4800, dragX = null, dragDX = 0, dragged = false;
+    function layout(extra) {
+      if (!slides.length) return;
+      var sw = slides[0].offsetWidth, gap = 16, vw = strip.clientWidth;
+      var x = vw / 2 - (idx * (sw + gap) + sw / 2) + (extra || 0);
+      track.style.transform = 'translateX(' + x.toFixed(1) + 'px)';
+      slides.forEach(function (s, j) { var d = Math.abs(j - idx); s.style.setProperty('--d', Math.min(3, d)); s.classList.toggle('on', d === 0); s.tabIndex = d === 0 ? 0 : -1; });
+    }
+    function restartProg() { prog.classList.remove('run'); void prog.offsetWidth; if (auto && inView) prog.classList.add('run'); }
+    function schedule() { clearTimeout(timer); if (auto && inView) timer = setTimeout(function () { go(idx + 1); }, DWELL); restartProg(); }
+    function go(i, user) {
+      idx = (i + photos.length) % photos.length; layout();
+      countEl.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(photos.length).padStart(2, '0');
+      var p = photos[idx]; select(placeOf(p), p);
+      if (user) { auto = false; setPlay(false); clearTimeout(resumeT); resumeT = setTimeout(function () { auto = !reduce; setPlay(auto); schedule(); }, 12000); }
+      schedule();
+    }
+    function setPlay(on) { playBtn.setAttribute('aria-pressed', on ? 'true' : 'false'); playBtn.querySelector('span').textContent = on ? 'Pause' : 'Play the journey'; }
+    // drag / swipe
+    strip.addEventListener('pointerdown', function (e) { dragX = e.clientX; dragDX = 0; dragged = false; track.classList.add('drag'); });
+    window.addEventListener('pointermove', function (e) { if (dragX === null) return; dragDX = e.clientX - dragX; if (Math.abs(dragDX) > 6) dragged = true; layout(dragDX); });
+    window.addEventListener('pointerup', function () {
+      if (dragX === null) return; track.classList.remove('drag');
+      var sw = slides[0] ? slides[0].offsetWidth : 300, steps = Math.round(-dragDX / (sw * 0.6));
+      dragX = null; if (dragged && steps) go(idx + steps, true); else layout();
+      setTimeout(function () { dragged = false; }, 0);
+    });
+    strip.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') { go(idx + 1, true); e.preventDefault(); } if (e.key === 'ArrowLeft') { go(idx - 1, true); e.preventDefault(); } });
+    strip.addEventListener('mouseenter', function () { clearTimeout(timer); prog.classList.remove('run'); });
+    strip.addEventListener('mouseleave', function () { schedule(); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { inView = es[0].isIntersecting; schedule(); }, { threshold: 0.25 }).observe(strip);
+    addEventListener('resize', function () { layout(); });
 
     var cur = -1, curPhoto = null, fly = null;
     function select(i, photo) {
@@ -156,26 +193,22 @@
       card.innerHTML = '<div class="life-photo"><img src="' + curPhoto.src + '" alt="' + (curPhoto.caption || pl.place) + '"></div>' +
         '<div class="life-meta"><div class="life-k">' + (pl.country || '') + (curPhoto.date ? ' · ' + fmtDate(curPhoto.date) : '') + '</div>' +
         '<h3>' + (pl.place || 'Somewhere new') + '</h3>' + (curPhoto.caption ? '<p>' + curPhoto.caption + '</p>' : '') +
-        '<div class="life-row"><span>' + coord(pl.lat, 'N', 'S') + ' · ' + coord(pl.lon, 'E', 'W') + '</span><span><b class="life-km">0</b> km from ' + home.name + '</span></div></div>';
+        '<div class="life-row"><span>' + coord(curPhoto.lat, 'N', 'S') + ' · ' + coord(curPhoto.lon, 'E', 'W') + '</span><span><b class="life-km">0</b> km from ' + home.name + '</span></div></div>';
       card.classList.add('in');
       countUp(card.querySelector('.life-km'), dist);
-      strip.querySelectorAll('.life-thumb').forEach(function (b, j) { b.classList.toggle('on', photos[j] === curPhoto); });
-      // fly camera to face the place
       var to = vec(pl.lat - 6, pl.lon, DIST);
-      fly = { t: 0, from: camera.position.clone(), to: to };
+      if (camera.position.distanceTo(to) > 0.05) fly = { t: 0, from: camera.position.clone(), to: to };
       controls.autoRotate = false;
-      trip = { curve: arcs[i].curve, t: 0 }; plane.visible = true;
+      if (!trip || trip.curve !== arcs[i].curve) { trip = { curve: arcs[i].curve, t: 0 }; }
+      plane.visible = true;
       arcs.forEach(function (a, j) { a.mat.opacity = j === i ? 1 : 0.25; });
       tag.textContent = pl.place || ''; tag.classList.add('on');
     }
-
-    var playing = false, playTimer = null, playIdx = -1;
-    function stopPlay() { playing = false; clearInterval(playTimer); playBtn.setAttribute('aria-pressed', 'false'); playBtn.querySelector('span').textContent = 'Play the journey'; }
-    function next() { playIdx = (playIdx + 1) % photos.length; var p = photos[playIdx]; select(placeOf(p), p); }
+    function stopPlay() { auto = false; clearTimeout(timer); setPlay(false); prog.classList.remove('run'); }
     playBtn.addEventListener('click', function () {
-      if (playing) { stopPlay(); return; }
-      playing = true; playBtn.setAttribute('aria-pressed', 'true'); playBtn.querySelector('span').textContent = 'Pause';
-      next(); playTimer = setInterval(next, 5200);
+      clearTimeout(resumeT);
+      if (auto) { stopPlay(); return; }
+      auto = true; setPlay(true); go(idx + 1);
     });
     root.querySelector('[data-life="reset"]').addEventListener('click', function () {
       stopPlay(); fly = { t: 0, from: camera.position.clone(), to: vec(home.lat - 8, home.lon + 10, DIST) };
@@ -191,7 +224,7 @@
       ptr.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
       ray.setFromCamera(ptr, camera);
       var hit = ray.intersectObjects(pickables, false)[0];
-      if (hit) { stopPlay(); select(hit.object.userData.idx); }
+      if (hit) { var hi = hit.object.userData.idx; go(photos.indexOf(places[hi].photos[0]), true); }
     });
     renderer.domElement.addEventListener('pointermove', function (e) {
       if (e.pointerType === 'touch') return;
@@ -239,7 +272,7 @@
     });
     stage.querySelector('.life-msg').style.display = 'none';
     root.classList.add('ready');
-    if (photos.length) setTimeout(function () { if (cur < 0) select(placeOf(photos[photos.length - 1]), photos[photos.length - 1]); }, reduce ? 0 : 1200);
+    setPlay(auto); requestAnimationFrame(function () { layout(); if (photos.length) go(0); });
   }
 
   if (!window.THREE || !THREE.OrbitControls) { stage.querySelector('.life-msg').textContent = 'This browser can’t show the globe.'; return; }
