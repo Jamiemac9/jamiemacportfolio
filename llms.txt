@@ -1,0 +1,27 @@
+# Jamie Mac
+
+> Jamie Mac (Jamie McCollin) is a founder based in Solihull, West Midlands, UK. Eight years in property and compliance, nearly ten years in technology. He helps companies and regulated industries adopt digital tools wisely and integrate the cloud, and runs his own businesses on a team of real AI agents.
+
+## Property and compliance
+- Property types: HMOs, social housing, supported housing, exempt accommodation, transitional housing, private lettings.
+- Support needs: low-level support to high support, including Deprivation of Liberty Safeguards (DoLS) and care leavers aged 16 to 18.
+- Roles: Director of Housing (team of 20+ staff and contractors), exempt accommodation inspection team leader at Birmingham City Council, compliance auditor against RSH and CQC standards, lettings manager, property and facilities manager.
+- Prop tech experience at Howsy.
+- Sourced, managed, scaled and sold HMO portfolios.
+
+## Technology
+- Building websites since 2017; cyber security, full-stack development and cloud architecture over the last two years.
+- Stack: React, Vite, Express, PostgreSQL, Prisma, Tailwind, Cloudflare, UK hosting, Cyber Essentials controls.
+- Agents: Hermes (jobs and outreach), Claude (builds and ships), Scout (leads), Grok (inbox), Sprig (knowledge vault). Humans approve outputs.
+
+## Businesses
+- [Support Audit](https://supportaudit.co.uk): audits whether supported housing providers' property and support evidence stands up, for Registered Providers and managing agents. Graded by an auditor.
+- [ExemptAccommodation.com](https://exemptaccommodation.com): plain-English hub on exempt, supported, transitional and emergency accommodation, with free tools, templates and a regulation tracker.
+- [APX Digital](https://apxdigital.io): retained digital and IT partner for UK SMEs, including Cyber Essentials for tenders.
+- [Cogent Intelligence](https://cogentintelligence.co.uk): AI agents and operational automation.
+- [High Performance Fit](https://highperformancefit.co.uk): personal training in Kings Heath, Birmingham. Jamie is a Level 4 personal trainer with 13 years of coaching.
+
+## Contact
+- Website: https://jamiemac.co.uk
+- LinkedIn: https://www.linkedin.com/in/jamie-mac-a16a9a11a/
+- Email: Jamiemack2991@gmail.com

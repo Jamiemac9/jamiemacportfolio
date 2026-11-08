@@ -28,7 +28,7 @@
     lg: { tag: 'Sector knowledge', name: 'ExemptAccommodation.com', accent: '#F27BA0', desc: 'The signal mast. Supported housing rules in plain English, free tools for providers and landlords, and regulation alerts broadcast when the rules change.', lines: ['Audit readiness check', 'Exempt accommodation checker', 'Service charge calculator'], link: 'https://exemptaccommodation.com' },
     epc: { tag: 'Personal projects', name: 'Personal projects', accent: '#B9DE78', desc: 'The terraces: the things I build because I want to. Some of them turn into businesses.', lines: ['EPC Birmingham', 'Labs', 'Side builds'], link: 'https://epcbirmingham.co.uk' },
     gym: { tag: 'Personal training', name: 'High Performance Fit', accent: '#F59E5B', desc: 'The gym. Thirteen years of coaching, Level 4 qualified, and the food logging app I built for clients.', lines: ['1-2-1, small-group and online', 'Kings Heath, Birmingham', 'Barcode food logging app'], link: 'https://highperformancefit.co.uk' },
-    agents: { tag: 'AI agents', name: 'The Hermes team', accent: '#5FD4C4', desc: 'Four agents, each with one job, working across every building on the island.', lines: ['Claude · Hermes · OpenRouter', 'Outputs wait for approval'], link: null }
+    agents: { tag: 'AI agents', name: 'The agent team', accent: '#5FD4C4', desc: 'Five real agents, each with one job, doing real work across every business on the island.', lines: ['Hermes · Claude · Scout · Grok · Sprig', 'Outputs wait for approval'], link: null }
   };
   var USES = {
     hq: ['A job comes in and the orchestrator breaks it into tasks', 'Specialist agents pick up the code, ops and content', 'Each output waits at a review gate before it goes out'],
@@ -39,7 +39,7 @@
     lg: ['A provider checks which exempt category their scheme is likely to fall into', 'The service charge calculator splits eligible and ineligible lines for Housing Benefit', 'When regulation changes, the tracker updates and alerts go out'],
     epc: ['EPC Birmingham: a local EPC site with a calculator and guides', 'High Performance Fit app: barcode food logging for clients', 'Lab builds: agents, security tests and cloud experiments'],
     gym: ['A new client books a consultation', 'Programme and macros are set, and food is logged by barcode', 'Weekly check-ins keep progress on track'],
-    agents: ['@orchestrator plans the day and assigns the work', '@code builds and ships; @coo files, reviews and follows up', '@marketing drafts content, and nothing goes out unapproved']
+    agents: ['Hermes runs the jobs and sends the outreach', 'Claude builds and ships; Scout finds and qualifies leads', 'Grok watches the inboxes; Sprig keeps the vault current']
   };
   Object.keys(USES).forEach(function (k) { INFO[k].uses = USES[k]; });
   var CASES = [
@@ -52,12 +52,15 @@
     { key: 'lg', label: 'Sector knowledge & tools', from: 'lg', to: 'sa' },
     { key: 'epc', label: 'Personal projects', from: 'gym', to: 'epc' }
   ];
+  // The real agents in Jamie's stack (the same roster as Cogent Island).
   var AGENTS = [
-    { key: 'orchestrator', name: '@orchestrator', accent: '#F2B544', desc: 'Plans the day and hands each job to the right agent.', says: ['Morning run planned. Handing out jobs.', 'Next job: outreach drafts for review.', 'All agents checked in.'] },
-    { key: 'code', name: '@code', accent: '#5FD4C4', desc: 'Builds and ships the sites, apps and automations.', says: ['Deploy finished. All green.', 'Hub template forked for a new site.', 'Tests passing. Shipping it.'] },
-    { key: 'coo', name: '@coo', accent: '#7FB6F2', desc: 'Keeps operations tidy: files, reviews and follow-ups.', says: ['Audit file passed to the auditor.', 'Review queue cleared.', 'Regulation update published.'] },
-    { key: 'marketing', name: '@marketing', accent: '#F27BA0', desc: 'Drafts posts and outreach, and sends nothing without review.', says: ['LinkedIn post drafted for review.', 'Outreach copy checked against the gate.', 'Case study ready to read.'] }
+    { key: 'hermes', name: 'Hermes', accent: '#F2B544', desc: 'File and workspace agent. Carries every Hermes run and every outreach batch.', says: [] },
+    { key: 'claude', name: 'Claude', accent: '#F59E5B', desc: 'Builds and ships: code, fixes and reusable assets, through Claude Code.', says: [] },
+    { key: 'scout', name: 'Scout', accent: '#F27BA0', desc: 'Lead scraper. Finds and qualifies new leads for each business.', says: [] },
+    { key: 'grok', name: 'Grok', accent: '#7FB6F2', desc: 'Watches the inboxes and flags replies the moment they land.', says: [] },
+    { key: 'sprig', name: 'Sprig', accent: '#B9DE78', desc: 'Keeps the Obsidian vault, the business brain, current every day.', says: [] }
   ];
+  var BRAND_HOME = { apx: 'apx', sa: 'sa', cog: 'ci', core: 'hq' };
 
   var started = false;
   function start() {
@@ -355,6 +358,23 @@
       scene.add(stars);
     }]);
 
+    var pipes = [];
+    steps.push(['Laying the pipelines\u2026', function () {
+      var hqTop = new T.Vector3(0, 3.6, 0);
+      Object.keys(buildings).forEach(function (k) {
+        if (k === 'hq') return;
+        var b = buildings[k], end = b.position.clone(); end.y += 1.2;
+        var mid = hqTop.clone().lerp(end, 0.5); mid.y += 2.2;
+        var curve = new T.QuadraticBezierCurve3(hqTop.clone(), mid, end);
+        var col = new T.Color(INFO[k].accent);
+        var tube = new T.Mesh(new T.TubeGeometry(curve, 40, 0.03, 5, false), new T.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.35 }));
+        island.add(tube);
+        var dots = [];
+        for (var i = 0; i < 3; i++) { var dsp = new T.Mesh(new T.SphereGeometry(0.09, 8, 6), new T.MeshBasicMaterial({ color: col })); island.add(dsp); dots.push(dsp); }
+        pipes.push({ key: k, curve: curve, dots: dots, mat: tube.material, boost: 0 });
+      });
+    }]);
+
     function topOf(key) { var b = buildings[key]; var v = b.position.clone(); v.y += (b.userData.h || 3) + 0.9; return v; }
 
     steps.push(['Lighting the lamps…', function () {
@@ -438,7 +458,7 @@
     function openPop(k) {
       openKey = k;
       var info, accent;
-      if (k.indexOf('agent:') === 0) { var a = AGENTS[+k.split(':')[1]]; info = { tag: 'Hermes agent', name: a.name, desc: a.desc, lines: ['Part of the Hermes agent team', 'Outputs wait for human approval'], link: null }; accent = a.accent; }
+      if (k.indexOf('agent:') === 0) { var a = AGENTS[+k.split(':')[1]]; info = { tag: 'Agent', name: a.name, desc: a.desc, lines: ['One of five real agents', 'Outputs wait for human approval'], link: null }; accent = a.accent; }
       else { info = INFO[k]; accent = info.accent; }
       pop.style.setProperty('--c', accent);
       pop.innerHTML = '<button type="button" class="yard-x" aria-label="Close">\u00d7</button><div class="yard-pt">' + info.tag + '</div><h4>' + info.name + '</h4><p>' + info.desc + '</p>' + (info.uses ? '<ol class="yard-uses">' + info.uses.map(function (l) { return '<li><span>' + l + '</span></li>'; }).join('') + '</ol><div class="yard-tagsline">' + info.lines.join(' \u00b7 ') + '</div>' : '<ul>' + info.lines.map(function (l) { return '<li><i></i>' + l + '</li>'; }).join('') + '</ul>') + (info.link ? '<a href="' + info.link + '">Visit ' + info.link.replace('https://', '') + ' \u2197</a>' : '');
@@ -508,14 +528,21 @@
 
     /* --- speech bubbles --- */
     var bubbleAgent = -1, bubbleUntil = 0, nextBubble = 4;
+    var liveQ = [];
+    window.__yardDispatch = function (ev) { liveQ.push(ev); };
     function speak(now) {
-      if (now > nextBubble && drones.length) {
-        bubbleAgent = Math.floor(Math.random() * drones.length);
-        var a = AGENTS[bubbleAgent];
-        bubble.innerHTML = '<b style="color:' + a.accent + '">' + a.name + '</b>' + a.says[Math.floor(Math.random() * a.says.length)];
-        bubbleUntil = now + 3.6; nextBubble = now + 9 + Math.random() * 4; bubX = -1;
-      }
+      if (!liveQ.length || now < nextBubble || !drones.length) return;
+      var ev = liveQ.shift(), ai = 0;
+      for (var i = 0; i < AGENTS.length; i++) if (AGENTS[i].key === ev.agent) ai = i;
+      var d = drones[ai], u = d.userData, home = BRAND_HOME[ev.brand] || 'hq';
+      if (buildings[home]) { u.from = nearestKey(d.position); u.to = home; u.t = 0; u.wait = 0; u.dur = 3.2; }
+      pipes.forEach(function (pp) { if (pp.key === home) pp.boost = 1; });
+      var a = AGENTS[ai];
+      bubbleAgent = ai;
+      bubble.innerHTML = '<b style="color:' + a.accent + '">' + a.name + ' \u00b7 live</b>' + ev.label + ' \u2192 ' + ev.business;
+      bubbleUntil = now + 5; nextBubble = now + 5.5; bubX = -1;
     }
+    function nearestKey(pos) { var best = 'hq', bd = 1e9; for (var k in buildings) { var dd = buildings[k].position.distanceToSquared(pos); if (dd < bd) { bd = dd; best = k; } } return best; }
 
     var camDir = new T.Vector3(1, 0, 1).normalize(), tmpV = new T.Vector3(), bubX = -1, bubY = -1;
     var v3 = new T.Vector3(), clock = new T.Clock(), elapsed = 0, keys;
@@ -564,6 +591,12 @@
         d.rotation.z = Math.sin(elapsed * 2 + u.agent) * 0.08;
         d.position.copy(v3);
         u.pkt.position.y = -0.36 + Math.sin(elapsed * 4 + u.agent) * 0.03;
+      });
+      pipes.forEach(function (pp) {
+        pp.boost = Math.max(0, pp.boost - dt * 0.15);
+        var sp = (0.12 + pp.boost * 0.5) * slow;
+        pp.mat.opacity = 0.3 + pp.boost * 0.6;
+        pp.dots.forEach(function (d, i) { var t = ((elapsed * sp) + i / pp.dots.length) % 1; d.position.copy(pp.curve.getPoint(t)); d.scale.setScalar(1 + pp.boost); });
       });
       // hover scale
       for (var k in buildings) { var g = buildings[k], target = (hoverKey === k || openKey === k) ? 1.06 : 1; var s = g.scale.x + (target - g.scale.x) * 0.15; g.scale.setScalar(s); }
