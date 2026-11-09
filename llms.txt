@@ -1,6 +1,6 @@
 # Jamie Mac
 
-> Jamie Mac (Jamie McCollin) is a founder based in Solihull, West Midlands, UK. Eight years in property and compliance, nearly ten years in technology. He helps companies and regulated industries adopt digital tools wisely and integrate the cloud, and runs his own businesses on a team of real AI agents.
+> Jamie Mac is a founder based in Solihull, West Midlands, UK. Eight years in property and compliance, nearly ten years in technology. He helps companies and regulated industries adopt digital tools wisely and integrate the cloud, and runs his own businesses on a team of real AI agents.
 
 ## Property and compliance
 - Property types: HMOs, social housing, supported housing, exempt accommodation, transitional housing, private lettings.
