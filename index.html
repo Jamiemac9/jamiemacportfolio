@@ -793,6 +793,11 @@ header.open .menu-btn i:last-child{top:21px;transform:rotate(-45deg)}
 
 
 /* ===== Polish pass ===== */
+.off-sub{margin:-24px 0 30px;color:#A9AEB8;font-size:17px}
+.minis-one{grid-template-columns:minmax(0,1fr)}
+.minis-one .build{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.minis-one .build .vis{border-bottom:0;border-right:1px solid rgba(185,222,120,.18)}
+@media (max-width:760px){.minis-one .build{display:block}.minis-one .build .vis{border-right:0}}
 a.inl{background-image:linear-gradient(color-mix(in srgb,var(--sa) 70%,transparent),color-mix(in srgb,var(--sa) 70%,transparent))}
 .jr-more{display:inline-flex;align-items:center;gap:12px;min-height:48px;padding:0 22px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.03);color:var(--text);font:600 15px var(--body);cursor:pointer;transition:border-color .3s,background .3s}
 .jr-more:hover{border-color:var(--sa);background:color-mix(in srgb,var(--sa) 10%,transparent)}
@@ -930,7 +935,7 @@ a.inl{background-image:linear-gradient(color-mix(in srgb,var(--sa) 70%,transpare
       <span class="pl l" aria-hidden="true">The boardroom</span><span class="pl r" aria-hidden="true">The gym</span>
     </div>
   </div>
-  <div class="place"><i></i>Solihull, West Midlands · Property, tech &amp; coaching</div>
+  <div class="place"><i></i>Solihull, West Midlands · Property, tech &amp; compliance</div>
   <h1><span>Jamie</span><span class="glow">Mac</span></h1>
   <p class="lede">At work I help companies and regulated industries adopt digital wisely and integrate the cloud. The rest of the time I <span class="rot" aria-live="polite"><b id="rotw">build</b></span></p>
   <p class="motto"><em>Built to pay its way</em> — the rule every build follows ›</p>
@@ -943,8 +948,8 @@ a.inl{background-image:linear-gradient(color-mix(in srgb,var(--sa) 70%,transpare
 
 <div class="ticker" aria-label="What I work on">
   <div class="track">
-    <span>Digital adoption</span><span style="--c:#5FD4C4">Cloud integration</span><span style="--c:#A98BF5">Regulated industries</span><span style="--c:#F27BA0">Agentic systems</span><span style="--c:#7FB6F2">Exempt accommodation</span><span style="--c:#B9DE78">Cyber security</span><span>Self-hosted tools</span><span style="--c:#5FD4C4">Systems architecture</span><span style="--c:#A98BF5">Mountain biking</span><span style="--c:#F27BA0">Level 4 PT</span><span style="--c:#7FB6F2">Travel</span>
-    <span>Digital adoption</span><span style="--c:#5FD4C4">Cloud integration</span><span style="--c:#A98BF5">Regulated industries</span><span style="--c:#F27BA0">Agentic systems</span><span style="--c:#7FB6F2">Exempt accommodation</span><span style="--c:#B9DE78">Cyber security</span><span>Self-hosted tools</span><span style="--c:#5FD4C4">Systems architecture</span><span style="--c:#A98BF5">Mountain biking</span><span style="--c:#F27BA0">Level 4 PT</span><span style="--c:#7FB6F2">Travel</span>
+    <span>Digital adoption</span><span style="--c:#5FD4C4">Cloud integration</span><span style="--c:#A98BF5">Regulated industries</span><span style="--c:#F27BA0">Agentic systems</span><span style="--c:#7FB6F2">Exempt accommodation</span><span style="--c:#B9DE78">Cyber security</span><span>Self-hosted tools</span><span style="--c:#5FD4C4">Systems architecture</span><span style="--c:#A98BF5">Mountain biking</span><span style="--c:#7FB6F2">Travel</span>
+    <span>Digital adoption</span><span style="--c:#5FD4C4">Cloud integration</span><span style="--c:#A98BF5">Regulated industries</span><span style="--c:#F27BA0">Agentic systems</span><span style="--c:#7FB6F2">Exempt accommodation</span><span style="--c:#B9DE78">Cyber security</span><span>Self-hosted tools</span><span style="--c:#5FD4C4">Systems architecture</span><span style="--c:#A98BF5">Mountain biking</span><span style="--c:#7FB6F2">Travel</span>
   </div>
 </div>
 
@@ -973,7 +978,7 @@ a.inl{background-image:linear-gradient(color-mix(in srgb,var(--sa) 70%,transpare
       <div class="card"><div class="big">8</div><p>years in property and compliance</p></div>
       <div class="card"><div class="big">~10</div><p>years in tech</p></div>
       <div class="card"><div class="big">20+</div><p>people led as Director of Housing</p></div>
-      <div class="card"><div class="big">13</div><p>years coaching, Level 4</p></div>
+      <div class="card"><div class="big">4</div><p>ventures running</p></div>
     </div>
   </div>
 </section>
@@ -1300,7 +1305,7 @@ a.inl{background-image:linear-gradient(color-mix(in srgb,var(--sa) 70%,transpare
       </div>
     </article>
 
-    <div class="minis">
+    <div class="minis minis-one">
       <article class="build reveal" style="--c:#B9DE78" data-accent="#B9DE78">
         <div class="vis">
           <div class="epc" aria-label="EPC rating bands A to G, with a home's rating improving from E to C">
@@ -1319,25 +1324,6 @@ a.inl{background-image:linear-gradient(color-mix(in srgb,var(--sa) 70%,transpare
           <h3>EPC Birmingham</h3>
           <p>An EPC assessment site for Birmingham, built on local data with a calculator and guides, so it ranks in search and gets quoted by AI answer engines.</p>
           <a class="go" href="https://epcbirmingham.co.uk">Visit epcbirmingham.co.uk <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"></path></svg></a>
-        </div>
-      </article>
-      <article class="build reveal" style="--c:#F59E5B" data-accent="#F59E5B">
-        <div class="vis photo">
-          <img src="img/coaching-wide.jpg" alt="Jamie in a client consultation at the gym" loading="lazy" width="1200" height="797">
-          <svg class="rings" viewBox="0 0 120 120" role="img" aria-label="Rings for protein, carbs and fat filling up for the day">
-            <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(242,123,160,.15)" stroke-width="9"></circle>
-            <circle cx="60" cy="60" r="38" fill="none" stroke="rgba(242,181,68,.15)" stroke-width="9"></circle>
-            <circle cx="60" cy="60" r="26" fill="none" stroke="rgba(95,212,196,.15)" stroke-width="9"></circle>
-            <circle class="rg" data-p=".82" cx="60" cy="60" r="50" fill="none" stroke="#F27BA0" stroke-width="9" stroke-linecap="round" transform="rotate(-90 60 60)"></circle>
-            <circle class="rg" data-p=".64" cx="60" cy="60" r="38" fill="none" stroke="#F2B544" stroke-width="9" stroke-linecap="round" transform="rotate(-90 60 60)"></circle>
-            <circle class="rg" data-p=".48" cx="60" cy="60" r="26" fill="none" stroke="#5FD4C4" stroke-width="9" stroke-linecap="round" transform="rotate(-90 60 60)"></circle>
-          </svg>
-        </div>
-        <div class="body">
-          <span class="pill">Personal training • Level 4 • Passion project</span>
-          <h3>High Performance Fit</h3>
-          <p>Thirteen years of coaching, Level 4 qualified. One-to-one, small-group and online training out of Kings Heath, Birmingham, plus a food logging app I built so clients can scan a barcode and see the day's macros.</p>
-          <a class="go" href="https://highperformancefit.co.uk">Visit highperformancefit.co.uk <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"></path></svg></a>
         </div>
       </article>
     </div>
@@ -1462,7 +1448,6 @@ a.inl{background-image:linear-gradient(color-mix(in srgb,var(--sa) 70%,transpare
       </div>
     </div>
     <div class="pw-detail" id="pwdetail" aria-live="polite"><div class="pw-dk">On the ground</div><h4>Supported HMOs</h4><p>Ran maintenance, repairs and compliance across a portfolio of supported housing HMOs in Birmingham. Everything since started here.</p></div>
-    <div class="pw-coach"><span>Running underneath all of it</span><div class="trk" aria-hidden="true"><i></i></div><span><b>Coaching</b> · 13 years · Level 4</span></div>
     </div>
   </div>
 </section>
@@ -1516,8 +1501,9 @@ a.inl{background-image:linear-gradient(color-mix(in srgb,var(--sa) 70%,transpare
   <div class="panel reveal">
     <div class="eyebrow">Stage 05 · Off the clock</div>
     <h2>Away from the <em>keyboard</em></h2>
+    <p class="off-sub">When I'm not doing property or tech.</p>
     <div class="bento">
-      <figure class="tile t-coach"><img src="img/coaching-gym.jpg" alt="Jamie coaching a client through dumbbell curls" loading="lazy" width="1400" height="787"><figcaption><div class="k">Coaching</div><p>One-to-one, small-group and online coaching at High Performance Fit.</p><div class="tile-cta"><a href="https://highperformancefit.co.uk" rel="noopener">Visit High Performance Fit <span aria-hidden="true">↗</span></a><a href="mailto:Jamiemack2991@gmail.com?subject=Coaching%20enquiry" class="ghost">Send me a message</a></div></figcaption></figure>
+      <figure class="tile t-coach"><img src="img/coaching-gym.jpg" alt="Jamie coaching a client through dumbbell curls" loading="lazy" width="1400" height="787"><figcaption><div class="k">Coaching</div><p>Thirteen years coaching, Level 4 qualified. One-to-one, small-group and online training at High Performance Fit in Kings Heath.</p><div class="tile-cta"><a href="https://highperformancefit.co.uk" rel="noopener">Visit High Performance Fit <span aria-hidden="true">↗</span></a><a href="mailto:Jamiemack2991@gmail.com?subject=Coaching%20enquiry" class="ghost">Send me a message</a></div></figcaption></figure>
       <figure class="tile t-tie"><img src="img/blacktie-tall.jpg" alt="Jamie in black tie, holding a glass" loading="lazy" width="640" height="1241"><figcaption><div class="k">Black tie</div><p>When the trainers come off.</p></figcaption></figure>
       <figure class="tile t-labs">
         <div class="term" id="term" aria-hidden="true"></div>

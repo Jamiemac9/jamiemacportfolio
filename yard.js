@@ -37,7 +37,7 @@
     apx: ['Scope what the business actually needs', 'Build the site, portal or system, and host it', 'Support and improve it month to month'],
     sa: ['A managing agent sends a batch of resident files', 'Each file is checked against a clear evidence standard', 'The provider gets a graded report with actions'],
     lg: ['A provider checks which exempt category their scheme is likely to fall into', 'The service charge calculator splits eligible and ineligible lines for Housing Benefit', 'When regulation changes, the tracker updates and alerts go out'],
-    epc: ['EPC Birmingham: a local EPC site with a calculator and guides', 'High Performance Fit app: barcode food logging for clients', 'Lab builds: agents, security tests and cloud experiments'],
+    epc: ['EPC Birmingham: a local EPC site with a calculator and guides', 'Lab builds: agents, security tests and cloud experiments'],
     gym: ['A new client books a consultation', 'Programme and macros are set, and food is logged by barcode', 'Weekly check-ins keep progress on track'],
     agents: ['Hermes runs the jobs and sends the outreach', 'Claude builds and ships; Scout finds and qualifies leads', 'Grok watches the inboxes; Sprig keeps the vault current']
   };
@@ -50,7 +50,7 @@
     { key: 'apx', label: 'Building for businesses', from: 'hq', to: 'apx' },
     { key: 'sa', label: 'Compliance systems', from: 'hq', to: 'sa' },
     { key: 'lg', label: 'Sector knowledge & tools', from: 'lg', to: 'sa' },
-    { key: 'epc', label: 'Personal projects', from: 'gym', to: 'epc' }
+    { key: 'epc', label: 'Personal projects', from: 'apx', to: 'epc' }
   ];
   // The real agents in Jamie's stack (the same roster as Cogent Island).
   var AGENTS = [
@@ -156,8 +156,8 @@
     }]);
 
     /* --- paths to buildings + building slots --- */
-    var slots = { sa: 0, ci: 1, apx: 2, arch: 3, lg: 4, epc: 5, gym: 6 };
-    function slotPos(i) { var a = i / 7 * Math.PI * 2 + 0.25; return { x: Math.cos(a) * 6.9, z: Math.sin(a) * 6.9, a: a }; }
+    var slots = { sa: 0, ci: 1, apx: 2, arch: 3, lg: 4, epc: 5 };
+    function slotPos(i) { var a = i / 6 * Math.PI * 2 + 0.25; return { x: Math.cos(a) * 6.9, z: Math.sin(a) * 6.9, a: a }; }
     function addPath(i) {
       var s = slotPos(i), len = 3.2; var p = box(0.9, 0.04, len, M(0xd9c7a2), Math.cos(s.a) * 4.9, 0.455, Math.sin(s.a) * 4.9); p.rotation.y = -s.a + Math.PI / 2; p.castShadow = false; island.add(p);
     }
@@ -299,19 +299,6 @@
       g.userData.h = 3.6; place('epc', g, slots.epc);
     }]);
 
-    steps.push(['Racking the weights…', function () {
-      var g = new T.Group(), wall = M(0x3a3f4d), steel = M(0x22252e, { metalness: 0.5, roughness: 0.4 });
-      g.add(box(3.0, 1.5, 2.0, wall, 0, 0.75, 0));
-      g.add(box(3.1, 0.12, 2.1, M(0xF59E5B), 0, 1.55, 0));
-      g.add(box(2.6, 0.9, 0.05, M(0xffd2a6, { emissive: 0xff9a4a, emissiveIntensity: 0.4 }), 0, 0.7, 1.01));
-      var bar = cyl(0.06, 0.06, 2.4, 8, M(0xc8ccd4, { metalness: 0.6, roughness: 0.3 }), 0, 2.15, 0); bar.rotation.z = Math.PI / 2; g.add(bar);
-      [-1, 1].forEach(function (sd) { for (var p = 0; p < 2; p++) { var pl = cyl(0.42 - p * 0.1, 0.42 - p * 0.1, 0.14, 16, steel, sd * (0.95 - p * 0.16), 2.15, 0); pl.rotation.z = Math.PI / 2; g.add(pl); } });
-      g.add(cyl(0.05, 0.05, 0.5, 6, M(0x34384a), -0.9, 1.85, 0)); g.add(cyl(0.05, 0.05, 0.5, 6, M(0x34384a), 0.9, 1.85, 0));
-      g.add(box(0.6, 0.6, 0.6, M(0x6b4a2e), 1.9, 0.3, 0.5));
-      g.add(box(0.45, 0.45, 0.45, M(0x6b4a2e), 1.95, 0.83, 0.5));
-      g.userData.h = 3.4; place('gym', g, slots.gym);
-    }]);
-
     steps.push(['Planting the trees…', function () {
       var greens = [0x4f8f3e, 0x5fa34a, 0x3f7a36, 0x86b54c, 0xd9893a, 0xc75b39, 0xe2b04a];
       var trunk = M(0x6b4a2e), placed = 0, tries = 0, avoid = [];
@@ -321,7 +308,7 @@
         var a = Math.random() * Math.PI * 2, r = 4.2 + Math.random() * 6.3, x = Math.cos(a) * r, z = Math.sin(a) * r;
         var ok = true;
         for (var i = 0; i < avoid.length; i++) { var dx = avoid[i].x - x, dz = avoid[i].z - z; if (dx * dx + dz * dz < 2.4 * 2.4) { ok = false; break; } }
-        for (var s = 0; s < 7 && ok; s++) { var sp = slotPos(s); var ang = Math.atan2(z, x) - sp.a; ang = Math.atan2(Math.sin(ang), Math.cos(ang)); if (Math.abs(ang) < 0.14 && r < 6) ok = false; }
+        for (var s = 0; s < 6 && ok; s++) { var sp = slotPos(s); var ang = Math.atan2(z, x) - sp.a; ang = Math.atan2(Math.sin(ang), Math.cos(ang)); if (Math.abs(ang) < 0.14 && r < 6) ok = false; }
         var pa = Math.atan2(z, x) - 2.49; pa = Math.atan2(Math.sin(pa), Math.cos(pa)); if (Math.hypot(x - (-3.976), z - (3.032)) < 2.1 || (Math.abs(pa) * r < 0.9 && r > 5)) ok = false;
         if (!ok) continue;
         var t = new T.Group(), sz = 0.7 + Math.random() * 0.6, c = greens[Math.floor(Math.random() * greens.length)];
