@@ -27,3 +27,8 @@ Photos without GPS: `python3 tools/add_travel.py --place "Town, Country" --lat 0
 - `life.js` – the travel globe; reads `data/places.json` and `data/land.json`
 - `vendor/` – three.js r147 and OrbitControls
 - `img/` – compressed images; `img/travel/` is written by the script
+
+## Weekly notes (blog)
+1. Write `posts/YYYY-MM-DD-short-slug.md` with front matter: `title`, `description` (one sentence), `tags`. Add `draft: true` to keep it hidden.
+2. `python3 tools/build_blog.py` builds `/blog/`, each post page, `feed.xml`, `sitemap.xml`, the homepage "What I'm working on" list and `llms.txt`.
+3. Commit and push. The IndexNow GitHub Action then tells Bing about every URL in the sitemap.

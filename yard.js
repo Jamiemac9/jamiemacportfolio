@@ -79,7 +79,7 @@
     var T = THREE;
     if (T.ColorManagement) T.ColorManagement.legacyMode = false;
     var W = stage.clientWidth, H = stage.clientHeight;
-    var renderer = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    var renderer = new T.WebGLRenderer({ antialias: !coarse, alpha: true, powerPreference: 'high-performance' });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, coarse ? 1.25 : 1.5));
     renderer.setSize(W, H);
     renderer.outputEncoding = T.sRGBEncoding;
@@ -113,14 +113,18 @@
     scene.add(sun); scene.add(sun.target);
     var moon = new T.DirectionalLight(0x8fa8ff, 0); moon.position.set(-14, 18, -8); scene.add(moon);
 
-    function M(c, o) { return new T.MeshStandardMaterial(Object.assign({ color: c, flatShading: true, roughness: 0.85, metalness: 0 }, o || {})); }
+    var matCache = {};
+    function M(c, o) {
+      var k = JSON.stringify([c && c.isColor ? c.getHex() : c, o || 0]);
+      return matCache[k] || (matCache[k] = new T.MeshStandardMaterial(Object.assign({ color: c, flatShading: true, roughness: 0.85, metalness: 0 }, o || {})));
+    }
     function mesh(g, m, x, y, z) { var o = new T.Mesh(g, m); o.position.set(x || 0, y || 0, z || 0); o.castShadow = true; o.receiveShadow = true; return o; }
     function box(w, h, d, m, x, y, z) { return mesh(new T.BoxGeometry(w, h, d), m, x, y, z); }
     function cyl(rt, rb, h, s, m, x, y, z) { return mesh(new T.CylinderGeometry(rt, rb, h, s), m, x, y, z); }
     function roof(w, d, h, m, x, y, z) { var r = mesh(new T.ConeGeometry(0.72, h, 4), m, x, y, z); r.rotation.y = Math.PI / 4; r.scale.set(w, 1, d); return r; }
 
-    var winMat = M(0xffcf7a, { emissive: 0xffb54a, emissiveIntensity: 0.2, roughness: 0.4 });
-    var lampMat = M(0xfff1c9, { emissive: 0xffd27a, emissiveIntensity: 0.2 });
+    var winMat = new T.MeshStandardMaterial({ color: 0xffcf7a, emissive: 0xffb54a, emissiveIntensity: 0.2, roughness: 0.4, flatShading: true });
+    var lampMat = new T.MeshStandardMaterial({ color: 0xfff1c9, emissive: 0xffd27a, emissiveIntensity: 0.2, flatShading: true });
     var glow = {};
     function glowMat(hex) { if (!glow[hex]) glow[hex] = M(hex, { emissive: hex, emissiveIntensity: 0.8, roughness: 0.4 }); return glow[hex]; }
     function windows(g, w, h, d, rows, cols, y0) {
@@ -247,7 +251,7 @@
       g.add(box(3.0, 1.3, 1.9, shell, 0, 0.65, 0));
       g.add(box(3.1, 0.12, 2.0, trim, 0, 1.36, 0));
       g.add(box(2.6, 0.9, 0.05, M(0x141922, { roughness: 0.2, metalness: 0.3 }), 0, 0.65, 0.96));
-      for (var rk = 0; rk < 5; rk++) for (var ld = 0; ld < 4; ld++) { var led = box(0.08, 0.05, 0.03, glowMat([0xA98BF5, 0x5FD4C4, 0xA98BF5, 0xB9DE78][(rk + ld) % 4]), -1.0 + rk * 0.5, 0.35 + ld * 0.18, 0.99); led.castShadow = false; led.userData.blink = 0.5 + Math.random() * 2.5; g.add(led); spinners.push(led); }
+      for (var rk = 0; rk < 5; rk++) for (var ld = 0; ld < 4; ld++) { var led = box(0.08, 0.05, 0.03, glowMat([0xA98BF5, 0x5FD4C4, 0xA98BF5, 0xB9DE78][(rk + ld) % 4]), -1.0 + rk * 0.5, 0.35 + ld * 0.18, 0.99); led.castShadow = false; g.add(led); }
       [-0.8, 0.8].forEach(function (x) {
         g.add(cyl(0.38, 0.38, 0.22, 14, trim, x, 1.53, -0.2));
         var fan = new T.Group(); fan.position.set(x, 1.66, -0.2);
@@ -534,7 +538,46 @@
     var camDir = new T.Vector3(1, 0, 1).normalize(), tmpV = new T.Vector3(), bubX = -1, bubY = -1;
     var v3 = new T.Vector3(), clock = new T.Clock(), elapsed = 0, keys;
     function front(pos) { tmpV.set(pos.x, 0, pos.z); if (tmpV.lengthSq() < 1) return 1; tmpV.normalize(); return tmpV.dot(camDir); }
+    // Merge everything that never moves into one mesh per material, per building.
+    // Cuts ~470 draw calls to a few dozen, which is what keeps phones smooth.
+    function mergeStatic() {
+      var BGU = T.BufferGeometryUtils; if (!BGU || !BGU.mergeBufferGeometries) return;
+      var dyn = new Set();
+      spinners.concat(pulses, drones).forEach(function (o) { dyn.add(o); });
+      pipes.forEach(function (pp) { pp.dots.forEach(function (d) { dyn.add(d); }); });
+      if (buildings.hq && buildings.hq.userData.hands) buildings.hq.userData.hands.forEach(function (h) { h.forEach(function (m) { dyn.add(m.parent); dyn.add(m); }); });
+      if (buildings.lg && buildings.lg.userData.beacon) dyn.add(buildings.lg.userData.beacon);
+      var roots = new Set([island]); for (var k in buildings) roots.add(buildings[k]);
+      Object.keys(buildings).forEach(function (k) { buildings[k].scale.setScalar(1); });
+      island.updateMatrixWorld(true);
+      var groups = new Map(), victims = [];
+      island.traverse(function (o) {
+        if (!o.isMesh || !o.material || !o.material.isMeshStandardMaterial || o.material.transparent) return;
+        var r = o.parent, skip = dyn.has(o);
+        while (r && !roots.has(r)) { if (dyn.has(r)) skip = true; r = r.parent; }
+        if (skip || !r) return;
+        var key = r.uuid + o.material.uuid;
+        if (!groups.has(key)) groups.set(key, { root: r, mat: o.material, geos: [], cast: false });
+        var g = o.geometry.index ? o.geometry.toNonIndexed() : o.geometry.clone();
+        Object.keys(g.attributes).forEach(function (a) { if (a !== 'position' && a !== 'normal') g.deleteAttribute(a); });
+        var inv = new T.Matrix4().copy(r.matrixWorld).invert();
+        g.applyMatrix4(inv.multiply(o.matrixWorld));
+        var e = groups.get(key); e.geos.push(g); e.cast = e.cast || o.castShadow;
+        victims.push(o);
+      });
+      var vs = new Set(victims);
+      for (var i = clickables.length - 1; i >= 0; i--) if (vs.has(clickables[i])) clickables.splice(i, 1);
+      victims.forEach(function (o) { o.parent.remove(o); });
+      groups.forEach(function (e) {
+        var merged = BGU.mergeBufferGeometries(e.geos, false); if (!merged) return;
+        var m = new T.Mesh(merged, e.mat); m.castShadow = e.cast; m.receiveShadow = true;
+        e.root.add(m);
+        if (e.root !== island) { m.userData.key = e.root.userData.key; clickables.push(m); }
+      });
+    }
+
     function finish() {
+      try { mergeStatic(); } catch (err) { /* keep the unmerged scene if anything goes wrong */ }
       setHour(realHour());
       keys = Object.keys(buildings);
       loader.classList.add('done');
@@ -543,8 +586,11 @@
       renderer.setAnimationLoop(tick);
     }
     var lastFollow = 0;
+    var acc = 0;
     function tick() {
-      var dt = Math.min(clock.getDelta(), 0.05);
+      var raw = clock.getDelta();
+      if (coarse) { acc += raw; if (acc < 1 / 30) return; raw = acc; acc = 0; }
+      var dt = Math.min(raw, 0.05);
       if (!visible) return;
       elapsed += dt;
       if (follow && elapsed - lastFollow > 20) { lastFollow = elapsed; setHour(realHour()); }

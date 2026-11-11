@@ -13,3 +13,9 @@
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+/blog/*
+  Cache-Control: no-cache
+/feed.xml
+  Cache-Control: no-cache
+/sitemap.xml
+  Cache-Control: no-cache

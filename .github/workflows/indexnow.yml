@@ -1,0 +1,20 @@
+# Tells Bing (and Yandex, Seznam, Naver) about new and changed pages on every push,
+# so they are indexed in hours instead of weeks. Google does not use IndexNow;
+# it reads sitemap.xml instead.
+name: IndexNow
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for Cloudflare Pages to finish deploying
+        run: sleep 120
+      - name: Submit every URL in the sitemap
+        run: |
+          URLS=$(grep -o '<loc>[^<]*</loc>' sitemap.xml | sed 's#</\?loc>##g' | python3 -c 'import sys,json;print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))')
+          curl -sS -X POST https://api.indexnow.org/indexnow -H 'Content-Type: application/json; charset=utf-8' \
+            -d "{\"host\":\"jamiemac.co.uk\",\"key\":\"b6af96918f0873333e18ccfa27ca1adb\",\"keyLocation\":\"https://jamiemac.co.uk/b6af96918f0873333e18ccfa27ca1adb.txt\",\"urlList\":$URLS}" -w '\nIndexNow HTTP %{http_code}\n'
