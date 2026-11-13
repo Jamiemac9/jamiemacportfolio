@@ -5,7 +5,8 @@ body{margin:0;background:radial-gradient(60vw 50vh at 100% 0%,rgba(242,181,68,.0
 a{color:var(--amber)}
 a:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:4px}
 .bh{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 24px;background:rgba(11,13,18,.94);border-bottom:1px solid var(--line)}
-.bh .brand{font-family:var(--display);font-style:italic;font-size:24px;color:var(--text);text-decoration:none}
+.bh .brand{display:flex;align-items:center}
+.bh .brand img{display:block;height:34px;width:auto}
 .bh nav{display:flex;gap:20px;font-size:14px}
 .bh nav a{color:var(--muted);text-decoration:none}
 .bh nav a:hover{color:var(--text)}
@@ -44,7 +45,22 @@ h1 em{color:var(--amber)}
 .posts .more{font-weight:700;font-size:14px;color:var(--amber)}
 .bf{max-width:720px;margin:0 auto;padding:30px 24px 50px;border-top:1px solid var(--line);font-size:14px;color:#8a909c;text-align:center}
 .bf a{color:#8a909c}
+html{scroll-behavior:smooth}
+.prose h2{scroll-margin-top:80px}
+.short{margin:0 0 26px;padding:22px 24px;border:1px solid rgba(242,181,68,.35);border-radius:20px;background:linear-gradient(160deg,rgba(242,181,68,.09),rgba(255,255,255,.015))}
+.short ul{margin:6px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.short li{position:relative;padding-left:26px;font-size:16px;line-height:1.55}
+.short li::before{content:"";position:absolute;left:2px;top:.55em;width:10px;height:10px;border-radius:3px;background:var(--amber);box-shadow:0 0 10px rgba(242,181,68,.6);transform:rotate(45deg)}
+.toc{margin:0 0 30px;padding:0 0 0 2px}
+.toc ol{margin:6px 0 0;padding-left:20px;display:grid;gap:4px;font-size:15px}
+.toc a{color:var(--muted);text-decoration:none}.toc a:hover{color:var(--text)}
+.toc li::marker{color:#6b7180;font:12px var(--mono)}
+.take{margin:6px 0 24px;padding:16px 20px;border-left:3px solid var(--amber);border-radius:0 14px 14px 0;background:rgba(242,181,68,.07)}
+.take b{display:block;font:700 11px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+.take p{margin:0;color:#e9e6de}
 @media (max-width:640px){
+  .bh .brand img{height:28px}
+  .short{padding:18px 18px}
   body{font-size:16.5px}
   .bh{padding:12px 18px}.bh nav{gap:14px}
   main{padding:36px 20px 60px}

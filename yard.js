@@ -63,15 +63,39 @@
   var BRAND_HOME = { apx: 'apx', sa: 'sa', cog: 'ci', core: 'hq' };
 
   var started = false;
+  // three.js is only fetched when the island is about to be seen, so it never slows the first paint
+  function loadScript(src) {
+    return new Promise(function (ok, no) {
+      var s = document.createElement('script'); s.src = src; s.async = false;
+      s.onload = ok; s.onerror = no; document.head.appendChild(s);
+    });
+  }
+  function libs() {
+    if (window.THREE && THREE.OrbitControls && THREE.BufferGeometryUtils) return Promise.resolve();
+    var v = 'vendor/';
+    return (window.THREE ? Promise.resolve() : loadScript(v + 'three.min.js'))
+      .then(function () { return Promise.all([loadScript(v + 'OrbitControls.js'), loadScript(v + 'BufferGeometryUtils.js')]); });
+  }
   function start() {
     if (started) return; started = true;
-    if (!window.THREE) { fail(); return; }
     try { var c = document.createElement('canvas'); if (!(c.getContext('webgl2') || c.getContext('webgl'))) { fail(); return; } } catch (e) { fail(); return; }
-    build();
+    setPct(0.06);
+    libs().then(function () {
+      // let the browser paint the loader before the heavy build
+      (window.requestIdleCallback || function (f) { setTimeout(f, 30); })(function () {
+        try { build(); } catch (err) { fail(); }
+      }, { timeout: 800 });
+    }, fail);
+  }
+  function setPct(f) {
+    var fg = root.querySelector('.yard-ring-fg');
+    if (fg) fg.style.strokeDashoffset = (326.7 * (1 - f)).toFixed(1);
+    if (pct) pct.textContent = Math.round(f * 100) + '%';
   }
   function fail() {
-    loader.querySelector('.yard-msg').textContent = 'This browser can’t show 3D. The ventures are listed below.';
-    root.querySelector('.yard-ring').style.display = 'none';
+    root.classList.add('yard-static');
+    loader.querySelector('.yard-msg').textContent = 'The live 3D view couldn’t start here. The ventures are listed below.';
+    root.querySelector('.yard-ring').style.display = 'none'; if (pct) pct.style.display = 'none';
   }
 
   /* ------------------------------------------------------------------ */
@@ -90,6 +114,12 @@
     renderer.domElement.setAttribute('aria-label', 'Interactive 3D island. Each building is one of Jamie’s ventures.');
     renderer.domElement.setAttribute('role', 'img');
     stage.appendChild(renderer.domElement);
+    renderer.domElement.addEventListener('webglcontextlost', function (e) {
+      e.preventDefault(); renderer.setAnimationLoop(null);
+      root.classList.add('yard-static'); loader.style.display = ''; loader.classList.remove('done');
+      root.querySelector('.yard-ring').style.display = 'none'; if (pct) pct.style.display = 'none';
+      msg.textContent = 'The 3D view paused to save memory. Reload the page to explore it again.';
+    });
 
     var scene = new T.Scene();
     scene.fog = new T.Fog(0xf2c6a8, 40, 90);
@@ -665,17 +695,10 @@
   }
 
   /* lazy start when the section nears the viewport */
+  // every device: start automatically as the island approaches. A poster image sits underneath, so it never looks empty
   var small = window.matchMedia('(max-width: 760px), (pointer: coarse)').matches;
-  if (small) {
-    // phones: wait for a tap so the 3D scene never slows the page
-    root.querySelector('.yard-ring').style.display = 'none'; pct.style.display = 'none';
-    msg.innerHTML = '';
-    var go = document.createElement('button'); go.type = 'button'; go.className = 'yard-go';
-    go.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>Explore the 3D island';
-    loader.insertBefore(go, msg); msg.textContent = 'Every venture as a building you can explore';
-    go.addEventListener('click', function () { go.remove(); root.querySelector('.yard-ring').style.display = ''; pct.style.display = ''; start(); });
-  } else if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); start(); } }, { rootMargin: '300px' });
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); start(); } }, { rootMargin: small ? '500px 0px' : '700px 0px' });
     io.observe(root);
   } else start();
 })();

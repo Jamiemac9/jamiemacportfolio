@@ -1,6 +1,6 @@
 # Jamie Mac
 
-> Jamie Mac is a founder based in Solihull, West Midlands, UK. Eight years in property and compliance, nearly ten years in technology. He helps companies and regulated industries adopt digital tools wisely and integrate the cloud, and runs his own businesses on a team of real AI agents.
+> Jamie Mac is a founder based in Solihull, West Midlands, UK. Eight years in property and compliance, ten years in technology. He helps companies and regulated industries adopt digital tools wisely and integrate the cloud, and runs his own businesses on a team of real AI agents.
 
 ## Property and compliance
 - Property types: HMOs, social housing, supported housing, exempt accommodation, transitional housing, private lettings.
@@ -27,4 +27,4 @@
 - Email: Jamiemack2991@gmail.com
 
 ## Weekly notes
-- [The week the site went live, and the agents got a window](https://jamiemac.co.uk/blog/the-week-the-site-went-live/): Weekly notes from Jamie Mac. This week jamiemac.co.uk went live, Cogent Island got a public feed so you can watch real agents doing real work, and Support Audit outreach kept moving.
+- [The week the site went live, and the agents got a window](https://jamiemac.co.uk/blog/the-week-the-site-went-live/): Weekly notes from Jamie Mac. jamiemac.co.uk went live, Cogent Island got a public feed so you can watch real agents doing real work, and Support Audit outreach kept moving. Plus what a week of mobile fixes taught me.

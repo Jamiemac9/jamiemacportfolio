@@ -9,8 +9,10 @@ Post file: posts/YYYY-MM-DD-slug.md with a front matter block:
 title: ...
 description: ...           (one sentence, used for search results and social cards)
 tags: a, b, c
+highlights: First key point | Second key point | Third key point   (3-5, shown as "The short version")
 ---
-Markdown body: ## headings, paragraphs, - lists, **bold**, *italic*, [links](url).
+Markdown body: ## headings, paragraphs, - lists, **bold**, *italic*, [links](url),
+and "> Takeaway: ..." lines, which render as a highlighted takeaway callout.
 
 Run: python3 tools/build_blog.py
 """
@@ -31,8 +33,14 @@ def inline(t):
 
 
 def md(src):
-    out, para, lst = [], [], []
+    out, para, lst, quote = [], [], [], []
     def flush():
+        if quote:
+            q = ' '.join(quote); quote.clear()
+            m = re.match(r'\*{0,2}([A-Za-z ]{3,24}):\*{0,2}\s*(.*)', q)
+            label, txt = (m.group(1), m.group(2)) if m else ('Takeaway', q)
+            txt = txt[:1].upper() + txt[1:]
+            out.append('<aside class="take"><b>%s</b><p>%s</p></aside>' % (html.escape(label), inline(txt)))
         if para: out.append('<p>%s</p>' % inline(' '.join(para))); para.clear()
         if lst: out.append('<ul>%s</ul>' % ''.join('<li>%s</li>' % inline(x) for x in lst)); lst.clear()
     for line in src.splitlines():
@@ -43,6 +51,10 @@ def md(src):
             flush(); lvl = len(m.group(1)); txt = m.group(2)
             sid = re.sub(r'[^a-z0-9]+', '-', txt.lower()).strip('-')
             out.append('<h%d id="%s">%s</h%d>' % (lvl, sid, inline(txt), lvl)); continue
+        if s.startswith('>'):
+            if para or lst: flush()
+            quote.append(s.lstrip('> ').strip()); continue
+        if quote: flush()
         if s.startswith(('- ', '* ')):
             if para: flush()
             lst.append(s[2:]); continue
@@ -65,7 +77,8 @@ def load():
         slug = f.stem[11:]
         body = m.group(2)
         words = len(re.findall(r'\w+', body))
-        posts.append({'title': meta['title'], 'description': meta.get('description', ''), 'tags': [t.strip() for t in meta.get('tags', '').split(',') if t.strip()],
+        hl = [x.strip() for x in meta.get('highlights', '').split('|') if x.strip()]
+        posts.append({'highlights': hl, 'title': meta['title'], 'description': meta.get('description', ''), 'tags': [t.strip() for t in meta.get('tags', '').split(',') if t.strip()],
                       'date': date, 'slug': slug, 'url': '%s/blog/%s/' % (SITE, slug), 'html': md(body), 'mins': max(1, round(words / 220))})
     return sorted(posts, key=lambda p: p['date'], reverse=True)
 
@@ -101,7 +114,7 @@ HEAD = '''<!DOCTYPE html>
 <script type="application/ld+json">{ld}</script>
 </head>
 <body>
-<header class="bh"><a class="brand" href="/">Jamie Mac</a><nav aria-label="Main"><a href="/blog/">Notes</a><a href="/#ventures">Ventures</a><a href="/#contact">Contact</a></nav></header>
+<header class="bh"><a class="brand" href="/" aria-label="Jamie Mac home"><img src="/img/logo-mark.webp" alt="Jamie Mac" width="480" height="117"></a><nav aria-label="Main"><a href="/blog/">Notes</a><a href="/#ventures">Ventures</a><a href="/#contact">Contact</a></nav></header>
 '''
 FOOT = '''<footer class="bf"><a href="/">jamiemac.co.uk</a> · <a href="/blog/">All notes</a> · <a href="/feed.xml">RSS</a></footer>
 </body>
@@ -112,7 +125,7 @@ FOOT = '''<footer class="bf"><a href="/">jamiemac.co.uk</a> · <a href="/blog/">
 def page_post(p, prev, nxt):
     ld = {'@context': 'https://schema.org', '@graph': [
         {'@type': 'BlogPosting', '@id': p['url'] + '#post', 'headline': p['title'], 'description': p['description'], 'datePublished': p['date'], 'dateModified': p['date'],
-         'inLanguage': 'en-GB', 'url': p['url'], 'mainEntityOfPage': p['url'], 'image': SITE + '/img/og.jpg', 'keywords': ', '.join(p['tags']),
+         'inLanguage': 'en-GB', 'url': p['url'], 'abstract': ' '.join(p['highlights']) or p['description'], 'mainEntityOfPage': p['url'], 'image': SITE + '/img/og.jpg', 'keywords': ', '.join(p['tags']),
          'author': {'@type': 'Person', '@id': SITE + '/#jamie', 'name': AUTHOR, 'url': SITE + '/'},
          'publisher': {'@type': 'Person', '@id': SITE + '/#jamie', 'name': AUTHOR},
          'isPartOf': {'@type': 'Blog', '@id': SITE + '/blog/#blog', 'name': 'Jamie Mac · Weekly notes'}},
@@ -125,18 +138,26 @@ def page_post(p, prev, nxt):
     if nxt: pn += '<a href="/blog/%s/"><small>Newer</small>%s</a>' % (nxt['slug'], html.escape(nxt['title']))
     if prev: pn += '<a href="/blog/%s/" class="older"><small>Older</small>%s</a>' % (prev['slug'], html.escape(prev['title']))
     pn += '</nav>'
+    hl = ''
+    if p['highlights']:
+        hl = '<section class="short" aria-label="The short version"><p class="kick">The short version</p><ul>%s</ul></section>' % ''.join('<li>%s</li>' % inline(x) for x in p['highlights'])
+    heads = re.findall(r'<h2 id="([^"]+)">(.*?)</h2>', p['html'])
+    toc = ''
+    if len(heads) >= 3:
+        toc = '<nav class="toc" aria-label="On this page"><p class="kick">On this page</p><ol>%s</ol></nav>' % ''.join('<li><a href="#%s">%s</a></li>' % (i, t) for i, t in heads)
     body = '''<main class="post">
 <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/blog/">Notes</a></nav>
 <article>
 <header><p class="kick">Weekly notes</p><h1>{t}</h1><p class="meta"><time datetime="{d}">{nd}</time> · {m} min read · by <a href="/">Jamie Mac</a></p><p class="lede">{desc}</p></header>
+{hl}{toc}
 <div class="prose">
 {html}
 </div>
-<aside class="author"><img src="/img/me.jpg" alt="" width="64" height="64" loading="lazy"><div><b>Jamie Mac</b><span>Property, tech and compliance. Eight years in property and compliance, nearly ten in tech. Solihull, UK.</span></div></aside>
+<aside class="author"><img src="/img/me.jpg" alt="" width="64" height="64" loading="lazy"><div><b>Jamie Mac</b><span>Property, tech and compliance. Eight years in property and compliance, ten in tech. Solihull, UK.</span></div></aside>
 </article>
 {pn}
 </main>
-'''.format(t=html.escape(p['title']), d=p['date'], nd=nice(p['date']), m=p['mins'], desc=html.escape(p['description']), html=p['html'], pn=pn)
+'''.format(t=html.escape(p['title']), d=p['date'], nd=nice(p['date']), m=p['mins'], desc=html.escape(p['description']), html=p['html'], pn=pn, hl=hl, toc=toc)
     return h + body + FOOT
 
 
