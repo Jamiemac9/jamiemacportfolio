@@ -27,4 +27,4 @@
 - Email: Jamiemack2991@gmail.com
 
 ## Weekly notes
-- [The week the site went live, and the agents got a window](https://jamiemac.co.uk/blog/the-week-the-site-went-live/): Weekly notes from Jamie Mac. jamiemac.co.uk went live, Cogent Island got a public feed so you can watch real agents doing real work, and Support Audit outreach kept moving. Plus what a week of mobile fixes taught me.
+- [My new site looked great on my laptop. My phone told the truth.](https://jamiemac.co.uk/blog/the-week-the-site-went-live/): I launched jamiemac.co.uk this week and it struggled on a phone. What went wrong, what fixed it, and a ten-minute check any business owner can run on their own site.

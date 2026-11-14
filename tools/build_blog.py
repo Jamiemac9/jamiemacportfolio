@@ -143,7 +143,7 @@ def page_post(p, prev, nxt):
         hl = '<section class="short" aria-label="The short version"><p class="kick">The short version</p><ul>%s</ul></section>' % ''.join('<li>%s</li>' % inline(x) for x in p['highlights'])
     heads = re.findall(r'<h2 id="([^"]+)">(.*?)</h2>', p['html'])
     toc = ''
-    if len(heads) >= 3:
+    if len(heads) >= 4:
         toc = '<nav class="toc" aria-label="On this page"><p class="kick">On this page</p><ol>%s</ol></nav>' % ''.join('<li><a href="#%s">%s</a></li>' % (i, t) for i, t in heads)
     body = '''<main class="post">
 <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a> <span>/</span> <a href="/blog/">Notes</a></nav>

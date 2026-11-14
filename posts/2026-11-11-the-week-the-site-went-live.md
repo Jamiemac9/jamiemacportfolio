@@ -1,70 +1,37 @@
 ---
-title: The week the site went live, and the agents got a window
-description: Weekly notes from Jamie Mac. jamiemac.co.uk went live, Cogent Island got a public feed so you can watch real agents doing real work, and Support Audit outreach kept moving. Plus what a week of mobile fixes taught me.
-tags: weekly notes, property tech, AI agents, compliance, web performance
-highlights: jamiemac.co.uk is live: one place for the property, tech and compliance work, built phone-first after the first version struggled on mobile | The 3D island went from nearly 500 draw calls to under 180, and now loads itself in the background instead of freezing the page | Real agent activity is now public through a read-only feed, with nothing private leaving the system | Support Audit is still the main focus: support evidence has no certificates or expiry dates, and that's exactly where providers get caught out | If you only take one thing away: test on a real phone on day one
+title: My new site looked great on my laptop. My phone told the truth.
+description: I launched jamiemac.co.uk this week and it struggled on a phone. What went wrong, what fixed it, and a ten-minute check any business owner can run on their own site.
+tags: weekly notes, websites, mobile, small business
+highlights: The site worked on a laptop and lagged, faded and froze on a phone | Three things fixed most of it: stop constant animation, show text straight away, load heavy parts last | Check your own site on your phone, on 4G, before you check it anywhere else
 ---
 
-Morning. This is the first of these, so a quick word on what they are. Every week I'll write up what I've actually been working on across property, tech and compliance: what shipped, what broke, and what I'd do differently. No polish for the sake of it. If something didn't work, it goes in here too.
+I put jamiemac.co.uk live this week. On my laptop it looked exactly how I wanted: big type, a bit of motion, a 3D island with my businesses on it. I was pleased with it.
 
-## The site you're reading went live
+Then I opened it on my phone.
 
-Each of my businesses has its own site, but none of them said much about the person behind them. This week jamiemac.co.uk went live, built from scratch, hosted on Cloudflare and deployed straight from GitHub.
+It lagged when I scrolled. The text faded in while I was trying to read it, so for a second or two I was squinting at half-invisible words. And the island, the bit I was proudest of, froze the whole page. If someone had clicked a link to me from LinkedIn, that's what they'd have seen first.
 
-It took longer than it should have, and most of that was mobile. The desktop version came together quickly. On a phone it lagged, text faded in while you were trying to read it, and the 3D island froze. Three fixes did most of the work:
+## Why it happened
 
-- **Stop animating things on every frame.** A colour effect was restyling the whole page sixty times a second. Moving it to only change when you reach a new section removed most of the lag.
-- **Don't make people wait to read.** Fade-in text looks nice on a laptop. On a phone it means reading half-invisible words. Text is now there the moment you arrive.
-- **Load heavy things last.** The 3D library is over half a megabyte. It now only downloads when you're about to scroll to it, so the first screen appears straight away.
+None of it was one big mistake. It was three small ones that only show up on a phone.
 
-> Takeaway: build for the phone first, then let the desktop have the extras. Most people reading this are on a phone.
+A colour effect was quietly updating the whole page sixty times a second. A laptop shrugs that off. A phone doesn't. The fade-in text looks smart on a big screen and is just annoying on a small one. And the island was drawing nearly 500 separate objects every frame, plus a large file the phone had to download before anything else could happen.
 
-## Making the 3D island fast enough for a phone
+The fixes were boring, which is usually a good sign. The colour now only changes when you reach a new section. Text is simply there when you arrive. And the island only loads when you scroll near it, with a still picture showing first so it never looks broken. It's now down to 176 objects instead of 472.
 
-The island was drawing nearly 500 separate objects every frame. Phones hate that. Every tree, window and roof tile was its own draw call, even though none of them ever move.
+## Why I'm telling you this
 
-The fix was unglamorous: merge everything that never moves into a handful of combined shapes, reuse materials instead of creating a new one for every object, and cap phones at a steady 30 frames a second. Draw calls dropped from 472 to 176. A still image of the island now shows instantly, and the live version fades in over it once it's ready, so it never looks broken while it loads.
+Because I've been building websites since 2017, and I still almost launched a site that didn't work for most of the people who'd see it.
 
-> Takeaway: if something feels slow, count before you optimise. One number (draw calls) explained almost all of the problem.
+Most people meet you on their phone first. A tenant looking for a room, a provider checking out an auditor, a client who got your name from someone. They're on 4G, they've got one thumb free, and they'll give you a few seconds. Your laptop is the least realistic place to judge your own website.
 
-## The agents got a window
+So here's the ten-minute check I'd do on any business site, including mine, from now on:
 
-The part I'm most pleased with is The Yard. It's a 3D island where each of my businesses is a building, and the drones flying between them are my real agents:
+- **Open it on your own phone, with wifi turned off.** If it takes long enough for you to notice, it's too slow.
+- **Look at the first screen without scrolling.** Can a stranger tell what you do and who it's for? If not, that's the first thing to fix.
+- **Tap everything you want people to tap.** Phone number, email, enquiry form, booking link. You'd be surprised how often one of them goes nowhere.
+- **Ask someone else to do it.** You know where everything is. They don't, and watching them look for it is the most useful five minutes you'll spend.
 
-- **Hermes** runs jobs and sends outreach
-- **Claude** builds and ships
-- **Scout** finds and qualifies leads
-- **Grok** watches the inboxes
-- **Sprig** keeps my notes and knowledge vault current
+## What's next
 
-It reads from Cogent Island, the work tracker those agents report into. This week I added a public, read-only feed to it, so real jobs agents finish can show up on the site. Nothing private goes out: no notes, no task names, nothing about clients or deals. Just "this agent did this kind of work for this business".
-
-I wanted it because "we use AI" means nothing on its own any more. Showing the work is more honest than describing it.
-
-> Takeaway: if you're putting automation in front of customers, decide what is safe to show before you build the feed, not after. Strip it down to who did what kind of work, and when.
-
-## Property and compliance kept moving
-
-Support Audit is still the main focus. It checks whether a supported housing provider's property and support evidence would stand up if a regulator or commissioner looked at it.
-
-Here's why it matters. Property compliance has certificates, expiry dates and a contractor who signs: gas safety, electrical checks, fire risk assessments. Support compliance has none of that. Support plans, risk assessments and evidence of meaningful support sit in case notes and spreadsheets, and nobody signs to say they're good enough. That's the gap, and it's usually where providers get caught out.
-
-Three questions I'd ask any provider this week:
-
-- Could you show, for each resident, the support they received last month and who delivered it?
-- When was each support plan last reviewed, and is that written down anywhere other than a diary?
-- If a commissioner asked for evidence tomorrow, how long would it take to pull together?
-
-ExemptAccommodation.com, the free plain-English hub on supported accommodation rules, keeps doing its quiet job in the background. It answers the questions landlords and providers actually ask.
-
-## What I'd do differently
-
-I'd have tested on a real phone from the very first day. Every problem I spent time fixing this week was visible from the first scroll on an iPhone. Browser tools that pretend to be a phone are useful, but they don't show you lag, and they don't show you what a tired thumb does.
-
-## Next week
-
-- Get Bing and the AI answer engines indexing the site properly
-- Keep the Support Audit conversations going
-- Write this up again next Wednesday
-
-If any of this is useful, or you're working on something in property, compliance or automation, [send me a message](mailto:Jamiemack2991@gmail.com). I reply to every one.
+Next week I'm making sure Bing and the AI search tools can actually find the site, and carrying on with Support Audit. If you run your own business site through that check and something looks off, [send me a message](mailto:Jamiemack2991@gmail.com). Happy to take a look.
