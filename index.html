@@ -979,6 +979,15 @@ a.inl{background-image:linear-gradient(color-mix(in srgb,var(--sa) 70%,transpare
 }
 
 /* Weekly notes on the homepage */
+.offer{max-width:900px}
+.offer-lede{color:#C3C6CD;font-size:18px;max-width:60ch;margin:0 0 28px}
+.offer-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.offer-card{padding:24px;border:1px solid rgba(255,255,255,.09);border-radius:18px;background:rgba(255,255,255,.02)}
+.offer-card h3{margin:0 0 12px;font-family:var(--display);font-weight:400;font-size:26px;line-height:1.15}
+.offer-card ul,.offer-card ol{margin:0;padding-left:20px;color:#C3C6CD;display:grid;gap:8px}
+.offer-price{font-family:var(--display);font-size:clamp(24px,2.6vw,32px);margin:0 0 6px}
+.offer-note{color:#8a909c;font-size:15px;margin:0 0 22px}
+@media (max-width:760px){.offer-grid{grid-template-columns:1fr}.offer h2,.offer .eyebrow{text-align:center}}
 .notes{max-width:900px}
 .notes-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
 .notes-list a{display:grid;gap:4px;padding:22px 24px;border:1px solid rgba(255,255,255,.09);border-radius:18px;background:rgba(255,255,255,.02);color:var(--text);text-decoration:none;transition:border-color .3s,transform .3s}
@@ -1632,6 +1641,34 @@ a.inl{background-image:linear-gradient(color-mix(in srgb,var(--sa) 70%,transpare
   <h2 id="notes-h">What I'm <em>working on</em></h2>
   <!-- notes:start --><ul class="notes-list"><li><a href="/blog/the-week-the-site-went-live/"><time datetime="2026-11-11">11 November 2026</time><b>My new site looked great on my laptop. My phone told the truth.</b><span>I launched jamiemac.co.uk this week and it struggled on a phone. What went wrong, what fixed it, and a ten-minute check any business owner can run on their own site.</span></a></li></ul><!-- notes:end -->
   <a class="notes-all" href="/blog/">All notes <span aria-hidden="true">→</span></a>
+</section>
+
+<section id="websites" class="stage offer" aria-labelledby="offer-h" data-accent="#7FB6F2" style="--sa:#7FB6F2">
+  <div class="eyebrow">Personal websites</div>
+  <h2 id="offer-h">A website that <em>reads like you</em></h2>
+  <p class="offer-lede">For founders, consultants and operators whose reputation is the business.</p>
+  <div class="offer-grid">
+    <div class="offer-card">
+      <h3>What you get</h3>
+      <ul>
+        <li>A one-page, scroll-led site built around your story, not a template</li>
+        <li>Your projects, results and background in chapters people actually read</li>
+        <li>Your own domain, fast hosting and analytics set up</li>
+        <li>Easy to add to: new projects, posts and photos</li>
+      </ul>
+    </div>
+    <div class="offer-card">
+      <h3>How it works</h3>
+      <ol>
+        <li>A 30-minute call about you and who the site is for</li>
+        <li>I draft the story and structure; you sign it off</li>
+        <li>Build, review, launch, usually within 48 hours</li>
+      </ol>
+    </div>
+  </div>
+  <p class="offer-price">From &pound;997, plus optional monthly care.</p>
+  <p class="offer-note">You're scrolling through an example right now.</p>
+  <a class="btn primary" href="mailto:Jamiemack2991@gmail.com?subject=Personal%20website">Start your site <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
 </section>
 
 <section id="faq" class="stage faq" aria-labelledby="faq-h" data-accent="#7FB6F2" style="--sa:#7FB6F2">
