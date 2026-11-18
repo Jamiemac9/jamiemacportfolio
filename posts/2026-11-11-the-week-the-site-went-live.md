@@ -1,37 +1,40 @@
 ---
-title: My new site looked great on my laptop. My phone told the truth.
-description: I launched jamiemac.co.uk this week and it struggled on a phone. What went wrong, what fixed it, and a ten-minute check any business owner can run on their own site.
-tags: weekly notes, websites, mobile, small business
-highlights: The site worked on a laptop and lagged, faded and froze on a phone | Three things fixed most of it: stop constant animation, show text straight away, load heavy parts last | Check your own site on your phone, on 4G, before you check it anywhere else
+title: "Notes #1: jamiemac.co.uk is live, with a live agent feed and a phone-first build"
+description: Week one. My personal site launched with a 3D map of my businesses, a public feed of real agent work, and search set-up done properly from day one.
+tags: weekly notes, websites, AI agents, search, property tech
+highlights: Launched jamiemac.co.uk: one place for my property, tech and compliance work | Cut the 3D island from 472 draw calls to 176 so it runs smoothly on a phone | Put a read-only feed of real agent work on the site, with nothing private exposed | Search, AI answer engines and IndexNow set up from day one, not bolted on later
 ---
 
-I put jamiemac.co.uk live this week. On my laptop it looked exactly how I wanted: big type, a bit of motion, a 3D island with my businesses on it. I was pleased with it.
+These notes are a weekly record of what I've shipped across property, tech and compliance, with the evidence, what I learned, and what's next. Each one starts by checking last week's promises, so you can see whether I hit them.
 
-Then I opened it on my phone.
+## Shipped this week
 
-It lagged when I scrolled. The text faded in while I was trying to read it, so for a second or two I was squinting at half-invisible words. And the island, the bit I was proudest of, froze the whole page. If someone had clicked a link to me from LinkedIn, that's what they'd have seen first.
+**jamiemac.co.uk went live.** One site that ties together eight years in property and compliance and ten in tech. It's hosted on Cloudflare and deploys from GitHub, so a change is live minutes after I make it.
 
-## Why it happened
+**The Yard.** A 3D island where each of my businesses is a building and my AI agents fly between them. It reads from Cogent Island, the tracker my agents report into, through a new public feed. The feed shows who did what kind of work for which business, and nothing else: no client names, task details or notes.
 
-None of it was one big mistake. It was three small ones that only show up on a phone.
+**Built for phones first.** The first version was heavy on a phone, so I rebuilt the slow parts before anyone saw them:
 
-A colour effect was quietly updating the whole page sixty times a second. A laptop shrugs that off. A phone doesn't. The fade-in text looks smart on a big screen and is just annoying on a small one. And the island was drawing nearly 500 separate objects every frame, plus a large file the phone had to download before anything else could happen.
+- The 3D island went from 472 draw calls to 176 by merging everything that never moves.
+- Phones are capped at 30 frames a second, so the island doesn't fight the rest of the page.
+- The page stopped restyling itself on every frame and only updates when you reach a new section.
 
-The fixes were boring, which is usually a good sign. The colour now only changes when you reach a new section. Text is simply there when you arrive. And the island only loads when you scroll near it, with a still picture showing first so it never looks broken. It's now down to 176 objects instead of 472.
+**Search set up properly.** Structured data that tells Google and AI tools who I am and what I do, a visible FAQ, a sitemap, an llms.txt file for AI answer engines, and IndexNow, which pings Bing and others automatically every time the site changes.
 
-## Why I'm telling you this
+## What I learned
 
-Because I've been building websites since 2017, and I still almost launched a site that didn't work for most of the people who'd see it.
+**Test on the device your customers use, before you call it finished.** A site can look perfect on a laptop and still be slow on the phone most people will actually see it on. I now check every change at phone, tablet and desktop width before it goes live.
 
-Most people meet you on their phone first. A tenant looking for a room, a provider checking out an auditor, a client who got your name from someone. They're on 4G, they've got one thumb free, and they'll give you a few seconds. Your laptop is the least realistic place to judge your own website.
+**If you say you use AI, show the work.** "We use AI" means very little now. A live view of real jobs, with private details stripped out, is far more convincing than a paragraph about it.
 
-So here's the ten-minute check I'd do on any business site, including mine, from now on:
+## For your business
 
-- **Open it on your own phone, with wifi turned off.** If it takes long enough for you to notice, it's too slow.
-- **Look at the first screen without scrolling.** Can a stranger tell what you do and who it's for? If not, that's the first thing to fix.
-- **Tap everything you want people to tap.** Phone number, email, enquiry form, booking link. You'd be surprised how often one of them goes nowhere.
-- **Ask someone else to do it.** You know where everything is. They don't, and watching them look for it is the most useful five minutes you'll spend.
+If you have a website, open it on your own phone, with wifi off, and check three things: how long it takes to load, whether a stranger could tell what you do from the first screen, and whether every phone number, email and form actually works.
 
-## What's next
+## Next week
 
-Next week I'm making sure Bing and the AI search tools can actually find the site, and carrying on with Support Audit. If you run your own business site through that check and something looks off, [send me a message](mailto:Jamiemack2991@gmail.com). Happy to take a look.
+- Get the site properly indexed by Google, Bing and the AI answer engines
+- Carry on with Support Audit outreach
+- Publish notes #2 with the results
+
+Working on something in property, compliance or automation? [Send me a message](mailto:Jamiemack2991@gmail.com).

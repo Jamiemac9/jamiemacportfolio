@@ -1,39 +1,51 @@
 ---
-title: My sites were giving Google the wrong address, and nothing looked broken
-description: Why pages on a working website can go missing from Google, and a ten-minute check to make sure yours points Google at the right address.
+title: "Notes #2: a search audit across my sites, and a new personal website offer"
+description: Week two. I audited how my sites present themselves to Google, found five hidden issues, added a build check against them, and launched personal websites.
 tags: weekly notes, websites, google, search, small business
-highlights: Several sites I run or look after were pointing Google at old, redirected or non-existent addresses | Nothing looked wrong to a visitor, which is how it goes unnoticed | Check that your canonical, your sitemap and your www version all agree on one address
+highlights: Audited the sites I run and manage for how Google sees them and found five types of hidden indexing issue | Added a build check that stops a page pointing Google at the wrong domain from going live | Launched personal websites from £997, usually built within 48 hours | Rule of thumb: let Search Console data decide your site's main address, not preference
 ---
 
-Last week I said I'd spend this week making sure search engines could actually find my site. That turned into going through the other sites I run and look after as well, because once I knew what to look for I kept finding it.
+## Last week I said I'd
 
-The problem was much the same everywhere. The sites worked. You could click around, read everything, fill in the forms. But behind the scenes they were telling Google the wrong address for their own pages.
+- **Get the site properly indexed.** Done, and I widened it to every site I run and manage. Details below.
+- **Carry on with Support Audit outreach.** Ongoing.
+- **Publish notes #2.** You're reading it.
 
-## What I found
+## Shipped this week
 
-Every page on a website carries a small note for search engines that says "this is my proper address". It's called a canonical. Your sitemap does the same job for the whole site, as a list. If those notes point somewhere slightly different from where the page really lives, Google has to decide what to believe, and often it just leaves the page out.
+**A search audit across my sites.** A site can work perfectly for visitors and still be telling Google the wrong thing about itself. I went through each site's canonicals (the tag on every page that tells Google its proper address), sitemaps and redirects, and found five types of issue:
 
-That's what was going on. On one site the sitemap and canonicals pointed at a domain that doesn't exist. On a blog, every post's address was missing the slash at the end, which redirected to the version with the slash, so Google saw each post as a redirect rather than a page. The section pages on that blog all said their proper address was the blog's homepage, so Google dropped them as duplicates. Another site was serving its homepage to Google in place of its inner pages. And a couple were built in a way that sends a near-empty page first and fills it in afterwards, which makes Google's job harder than it needs to be.
+- A sitemap and canonicals pointing at a domain that doesn't exist.
+- Blog post addresses missing the trailing slash, so Google saw every post as a redirect rather than a page.
+- Section pages declaring the blog homepage as their proper address, so Google dropped them as duplicates.
+- A site serving its homepage to Google in place of its inner pages.
+- Pages that arrived near-empty and filled in afterwards, which makes them harder for Google to read.
 
-None of this shows up for a visitor, which is exactly how it goes unnoticed. If people find you by searching, whether that's tenants looking for a room or customers looking for a trade, a page Google has dropped is a page they'll never see.
+**A guardrail so it can't come back.** On the site where the domain mattered most, every address is now built from one fixed starting point, and the build refuses to go live if the wrong domain slips into a page. A fix that relies on someone remembering it doesn't last. One that's built in does.
 
-## The one I got wrong
+**Personal websites, as a service.** The site you're on is now the example for an offer: a scroll-led personal site for founders, consultants and operators whose reputation is the business. From £997, usually built within 48 hours of a 30-minute call. [See the details](/#websites).
 
-One site could be reached with or without the www at the front. I tidied it up so everything pointed at the version without the www. Then I looked at what Google was actually doing, and it was the other way round. All of the site's recent clicks from Google were coming through the www version, and none through the other one. I'd just pointed Google away from the address it already trusted.
+**A sharper site.** A new logo, a cleaner menu, and the 3D island now loads by itself with an instant preview, so it never looks blank on a slow connection.
 
-So I moved it all back to www. I also changed the code so every address on the site is built from one fixed starting point, which means a single page can't quietly put out the wrong domain again. And the build now refuses to go live if the wrong version slips through.
+## What I learned
 
-The lesson for me was simple. Don't pick the version you prefer. Look at which one Google is already using and back that one.
+**Let the data choose your main address.** One site could be reached with or without "www". Search Console showed all of its recent Google clicks were coming through the www version, so that's the one I made the main address. Whichever version Google already trusts is the one to back. Preference doesn't come into it.
 
-## A ten-minute check for your own site
+**Fixes should become checks.** The domain fix is now enforced by the build, and that's the standard I'm applying to the rest. It's what turns a one-off clean-up into something that stays fixed.
 
-If you've got a business website, especially one that's been rebuilt, moved or changed domain, this is worth doing:
+## For your business
 
-- **Type your address four ways.** With and without www, with http and with https. All four should land on exactly the same address in the browser bar.
-- **Look at a page's canonical.** On a laptop, right-click a page, choose View page source and search for "canonical". The address there should match the one in your browser bar exactly, slash and all.
-- **Open yourdomain/sitemap.xml.** Every address in it should be on your real domain, and none of them should redirect when you open them.
-- **Search Google for site:yourdomain.co.uk.** If pages you care about aren't there, something above is probably off.
+If your site has been rebuilt, moved or changed domain, spend ten minutes on this:
 
-If you use Google Search Console, the Pages report tells you which pages it has left out and why. "Page with redirect" and anything starting with "Duplicate" are the ones to look at first.
+- Type your address four ways: with and without www, and with http and https. All four should end up at exactly the same address.
+- Open yourdomain/sitemap.xml. Every address should be on your real domain, and none should redirect.
+- Search Google for site:yourdomain.co.uk. If pages you care about are missing, one of the above is usually why.
+- In Search Console, open the Pages report and look first at "Page with redirect" and anything starting with "Duplicate".
 
-If you run through that and something doesn't add up, [send me a message](mailto:Jamiemack2991@gmail.com) and I'll have a look.
+## Next week
+
+- Track the fixed pages back into Google's index in Search Console
+- Get the personal websites offer in front of the people it's for
+- Notes #3, starting with how these went
+
+If any of that check doesn't add up for your site, [send me a message](mailto:Jamiemack2991@gmail.com).

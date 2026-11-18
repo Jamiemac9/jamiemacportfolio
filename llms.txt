@@ -27,5 +27,5 @@
 - Email: Jamiemack2991@gmail.com
 
 ## Weekly notes
-- [My sites were giving Google the wrong address, and nothing looked broken](https://jamiemac.co.uk/blog/giving-google-the-wrong-address/): Why pages on a working website can go missing from Google, and a ten-minute check to make sure yours points Google at the right address.
-- [My new site looked great on my laptop. My phone told the truth.](https://jamiemac.co.uk/blog/the-week-the-site-went-live/): I launched jamiemac.co.uk this week and it struggled on a phone. What went wrong, what fixed it, and a ten-minute check any business owner can run on their own site.
+- [Notes #2: a search audit across my sites, and a new personal website offer](https://jamiemac.co.uk/blog/giving-google-the-wrong-address/): Week two. I audited how my sites present themselves to Google, found five hidden issues, added a build check against them, and launched personal websites.
+- [Notes #1: jamiemac.co.uk is live, with a live agent feed and a phone-first build](https://jamiemac.co.uk/blog/the-week-the-site-went-live/): Week one. My personal site launched with a 3D map of my businesses, a public feed of real agent work, and search set-up done properly from day one.

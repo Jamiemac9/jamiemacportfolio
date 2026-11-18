@@ -71,6 +71,7 @@ def load():
         m = re.match(r'---\n(.*?)\n---\n(.*)', raw, re.S)
         if not m: continue
         meta = dict(l.split(':', 1) for l in m.group(1).splitlines() if ':' in l)
+        meta = {k.strip(): v.strip().strip('"').strip("'") for k, v in meta.items()}
         meta = {k.strip(): v.strip() for k, v in meta.items()}
         if meta.get('draft', '').lower() == 'true': continue
         date = f.name[:10]
